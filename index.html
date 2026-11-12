@@ -58,6 +58,9 @@ h1{font-size:22px;margin:4px 0;font-weight:400;color:#EF9F27;letter-spacing:4px;
 .backbtn{padding:7px 10px;white-space:nowrap;font-size:13px}
 .toast{position:fixed;left:50%;top:14px;transform:translateX(-50%);background:#141413;border:1px solid #EF9F27;padding:8px 14px;z-index:20;max-width:340px;text-align:center;transition:opacity .5s;font-size:13px}
 .toast.out{opacity:0}
+#app:not(.fit),.modal>div,.toast{zoom:var(--z,1)}
+.ctrl.lh{flex-direction:row-reverse}
+input[type=range]{accent-color:#EF9F27;height:28px}
 #app{padding-top:max(10px,env(safe-area-inset-top));padding-bottom:max(12px,env(safe-area-inset-bottom))}
 #app.fit{padding-bottom:max(12px,env(safe-area-inset-bottom))}
 .toast{top:max(14px,env(safe-area-inset-top))}
@@ -67,6 +70,7 @@ h1{font-size:22px;margin:4px 0;font-weight:400;color:#EF9F27;letter-spacing:4px;
 <div id="app"></div>
 <script>
 const SK={"FIR-001":["火噛み","火","物理",30,95,2,"E","書／封印","",0],"FIR-002":["灼熱牙","火","物理",50,90,4,"D","書／封印","",0],"FIR-003":["爆炎拳","火","物理",85,80,7,"C","書","",0],"FIR-004":["火の粉","火","術",30,95,2,"E","書／封印","",0],"FIR-005":["フレア","火","術",55,90,4,"D","書／封印","",0],"FIR-006":["業火","火","術",90,80,8,"B","書","",0],"FIR-007":["燻り","火","術",20,85,3,"D","書／封印","火傷を付与（毎ターン最大HPの5%）",0],"FIR-008":["闘志の炎","火","補助",0,100,3,"D","書／封印","攻撃↑（3ターン）",0],"FIR-009":["煤まみれ","火","補助",0,90,3,"D","書／封印","敵の命中↓（3ターン）",0],"FIR-010":["残り火","火","回復",0,100,4,"C","書","3ターンの間、毎ターンHPを8%回復",0],"FIR-013":["火走り","火","物理",100,90,8,"B","書","必ず先制する",0],"FIR-014":["紅蓮天墜","火","術",140,90,12,"S","融合","敵の火傷中は威力1.5倍",0],"FIR-015":["焼身","火","術",150,85,6,"A","呪われた書","自分も火傷になる",1],"WAT-001":["水弾","水","物理",30,95,2,"E","書／封印","",0],"WAT-002":["渦潮爪","水","物理",50,90,4,"D","書／封印","",0],"WAT-003":["激流撃","水","物理",85,80,7,"C","書","",0],"WAT-004":["泡沫","水","術",30,95,2,"E","書／封印","",0],"WAT-005":["水鏡の矢","水","術",55,90,4,"D","書／封印","",0],"WAT-006":["大海嘯","水","術",90,80,8,"B","書","",0],"WAT-007":["濡らし","水","術",20,85,3,"D","書／封印","濡れを付与（雷の被ダメ↑・火の被ダメ↓）",0],"WAT-008":["流水の構え","水","補助",0,100,3,"D","書／封印","回避↑（3ターン）",0],"WAT-009":["潮騒","水","補助",0,90,3,"D","書／封印","敵の気を2減らす",0],"WAT-010":["癒しの雫","水","回復",0,100,4,"C","書","HPを30%回復",0],"WAT-013":["鉄砲水","水","物理",100,90,8,"B","書","必ず先制する",0],"WAT-014":["天泣の大瀑布","水","術",140,90,12,"S","融合","与ダメの20%を回復",0],"WAT-015":["溺れ契り","水","術",150,85,6,"A","呪われた書","与ダメの50%吸収。自分の速さ↓（戦闘中ずっと）",1],"WND-001":["鉤爪","風","物理",30,95,2,"E","書／封印","",0],"WND-002":["疾風蹴り","風","物理",50,90,4,"D","書／封印","",0],"WND-003":["旋風脚","風","物理",85,80,7,"C","書","",0],"WND-004":["そよ風刃","風","術",30,95,2,"E","書／封印","",0],"WND-005":["かまいたち","風","術",55,90,4,"D","書／封印","急所に当たりやすい",0],"WND-006":["嵐の歌","風","術",90,80,8,"B","書","",0],"WND-007":["乱気流","風","術",20,85,3,"D","書／封印","乱気を付与（命中↓）",0],"WND-008":["追い風","風","補助",0,100,3,"D","書／封印","速さ↑（3ターン）",0],"WND-009":["風切り羽","風","補助",0,90,3,"D","書／封印","敵の回避↓（3ターン）",0],"WND-010":["吹き払い","風","回復",0,100,4,"C","書","自分の状態異常を解除",0],"WND-013":["天翔","風","物理",100,90,8,"B","書","2回攻撃",0],"WND-014":["千刃颶風","風","術",140,90,12,"S","融合","2〜4回攻撃",0],"WND-015":["断空","風","術",150,85,6,"A","呪われた書","使用後1ターン行動できない",1],"ERT-001":["岩突き","地","物理",30,95,2,"E","書／封印","",0],"ERT-002":["地割り","地","物理",50,90,4,"D","書／封印","",0],"ERT-003":["大地砕き","地","物理",85,80,7,"C","書","",0],"ERT-004":["砂礫","地","術",30,95,2,"E","書／封印","",0],"ERT-005":["岩雪崩","地","術",55,90,4,"D","書／封印","",0],"ERT-006":["地脈噴","地","術",90,80,8,"B","書","",0],"ERT-007":["砂かけ","地","術",20,85,3,"D","書／封印","鈍重を付与（速さ↓）",0],"ERT-008":["岩の鎧","地","補助",0,100,3,"D","書／封印","防御↑（3ターン）",0],"ERT-009":["地響き","地","補助",0,90,3,"D","書／封印","敵の防御↓（3ターン）",0],"ERT-010":["根を張る","地","回復",0,100,4,"C","書","交代不可になる代わりに毎ターンHP10%回復",0],"ERT-013":["山崩し","地","物理",100,90,8,"B","書","防御が高いほど威力↑",0],"ERT-014":["大陸断ち","地","術",140,90,12,"S","融合","敵の防御上昇を無視",0],"ERT-015":["石化の誓い","地","術",150,85,6,"A","呪われた書","防御大↑。速さが最低になる（戦闘中ずっと）",1],"THN-001":["電撃爪","雷","物理",30,95,2,"E","書／封印","",0],"THN-002":["稲妻突き","雷","物理",50,90,4,"D","書／封印","",0],"THN-003":["雷槌","雷","物理",85,80,7,"C","書","",0],"THN-004":["静電気","雷","術",30,95,2,"E","書／封印","",0],"THN-005":["雷撃","雷","術",55,90,4,"D","書／封印","",0],"THN-006":["落雷","雷","術",90,80,8,"B","書","",0],"THN-007":["痺れ針","雷","術",20,85,3,"D","書／封印","麻痺を付与（25%で行動不能）",0],"THN-008":["帯電","雷","補助",0,100,3,"D","書／封印","次の雷スキルの威力2倍",0],"THN-009":["放電の霧","雷","補助",0,90,3,"D","書／封印","敵の術防御↓（3ターン）",0],"THN-010":["充電","雷","回復",0,100,0,"C","書","気+5",0],"THN-013":["迅雷","雷","物理",100,90,8,"B","書","必ず先制する。麻痺中の敵に威力1.5倍",0],"THN-014":["天鳴雷帝","雷","術",140,90,12,"S","融合","濡れ・麻痺中の敵に威力1.5倍",0],"THN-015":["過電流","雷","術",150,85,6,"A","呪われた書","自分も麻痺になる",1],"ICE-001":["氷爪","氷","物理",30,95,2,"E","書／封印","",0],"ICE-002":["氷柱突き","氷","物理",50,90,4,"D","書／封印","",0],"ICE-003":["氷河割り","氷","物理",85,80,7,"C","書","",0],"ICE-004":["霜の息","氷","術",30,95,2,"E","書／封印","",0],"ICE-005":["氷槍","氷","術",55,90,4,"D","書／封印","",0],"ICE-006":["大寒波","氷","術",90,80,8,"B","書","",0],"ICE-007":["凍て付き","氷","術",20,85,3,"D","書／封印","凍結を付与（1ターン行動不能・物理で解除）",0],"ICE-008":["氷の膜","氷","補助",0,100,3,"D","書／封印","受けるダメージ↓（2ターン）",0],"ICE-009":["霜降り","氷","補助",0,90,3,"D","書／封印","敵の攻撃↓（3ターン）",0],"ICE-010":["冬眠","氷","回復",0,100,4,"C","書","HPを50%回復。次のターン行動できない",0],"ICE-013":["絶対零度","氷","術",100,90,8,"B","書","凍結中の敵に威力3倍",0],"ICE-014":["永久凍土","氷","術",140,90,12,"S","融合","30%で凍結を付与",0],"ICE-015":["凍心","氷","術",150,85,6,"A","呪われた書","攻撃大↑。戦闘後に絆が下がる",1],"LGT-001":["光の爪","光","物理",30,95,2,"E","書／封印","",0],"LGT-002":["閃光撃","光","物理",50,90,4,"D","書／封印","",0],"LGT-003":["聖槍","光","物理",85,80,7,"C","書","",0],"LGT-004":["光弾","光","術",30,95,2,"E","書／封印","",0],"LGT-005":["光線","光","術",55,90,4,"D","書／封印","",0],"LGT-006":["天光","光","術",90,80,8,"B","書","",0],"LGT-007":["眩しい灯","光","術",20,85,3,"D","書／封印","眩み（命中↓・術の被ダメ↑）を付与",0],"LGT-008":["祝福","光","補助",0,100,3,"D","書／封印","全能力小↑（3ターン）",0],"LGT-009":["照らし出す","光","補助",0,90,3,"D","書／封印","敵の回避↓。回避上昇を解除",0],"LGT-010":["癒しの灯","光","回復",0,100,4,"C","書","HPを40%回復",0],"LGT-013":["天啓","光","術",100,90,8,"B","書","必中",0],"LGT-014":["黎明の灯","光","術",140,90,12,"S","融合","与ダメの30%を回復し、状態異常も解除",0],"LGT-015":["灯を焦がす","光","術",150,85,6,"A","呪われた書","潜行中の灯を3消費する",1],"DRK-001":["影爪","闇","物理",30,95,2,"E","書／封印","",0],"DRK-002":["闇討ち","闇","物理",50,90,4,"D","書／封印","敵が行動前なら威力1.5倍",0],"DRK-003":["深淵の顎","闇","物理",85,80,7,"C","書","",0],"DRK-004":["黒い靄","闇","術",30,95,2,"E","書／封印","",0],"DRK-005":["影弾","闇","術",55,90,4,"D","書／封印","",0],"DRK-006":["奈落","闇","術",90,80,8,"B","書","",0],"DRK-007":["恐怖の目","闇","術",20,85,3,"D","書／封印","恐怖を付与（敵の狂気↑）",0],"DRK-008":["影潜り","闇","補助",0,100,3,"D","書／封印","回避大↑（1ターン）",0],"DRK-009":["呪縛","闇","補助",0,90,3,"D","書／封印","敵を交代不可にする（3ターン）",0],"DRK-010":["吸魂","闇","術",40,95,4,"C","書","与ダメの50%を回復",0],"DRK-013":["深淵覗き","闇","術",100,90,8,"B","書","敵の狂気が高いほど威力↑",0],"DRK-014":["無明","闇","術",140,90,12,"S","融合","敵の補助効果をすべて解除",0],"DRK-015":["魂喰らい","闇","術",150,85,6,"A","呪われた書","狂気が大きく上がる",1],"NUL-001":["体当たり","無","物理",30,95,2,"E","書／封印","",0],"NUL-002":["ひっかき","無","物理",25,100,1,"E","書／封印","急所に当たりやすい",0],"NUL-003":["噛砕","無","物理",45,90,3,"D","書／封印","",0],"NUL-004":["連続噛み","無","物理",15,90,3,"D","書／封印","2〜4回攻撃",0],"NUL-005":["突進","無","物理",70,85,5,"C","書","",0],"NUL-006":["捨て身","無","物理",110,90,6,"B","書","与ダメの25%を自分も受ける",0],"NUL-007":["睨み","無","補助",0,90,2,"E","書／封印","敵の攻撃↓（3ターン）",0],"NUL-008":["吠える","無","補助",0,85,2,"D","書／封印","敵の気を3減らす",0],"NUL-009":["身構え","無","補助",0,100,1,"E","書／封印","このターン受けるダメージ半減",0],"NUL-010":["休む","無","回復",0,100,0,"D","書","HP20%と気3を回復",0],"NUL-011":["気合い溜め","無","補助",0,100,3,"C","書","次の攻撃の威力2倍",0],"NUL-012":["様子見","無","補助",0,100,0,"E","書／封印","気+3、回避小↑（1ターン）",0],"NUL-021":["血の契り","無","呪",0,100,2,"A","呪われた書","HPの半分を払い、攻撃・術が大↑",1],"NUL-022":["狂い咲き","無","呪",0,100,4,"A","呪われた書","狂気が最大になり、全能力大↑",1],"NUL-023":["捨て灯","無","呪",0,100,0,"B","呪われた書","潜行中の灯を10消費してHP全回復",1],"NUL-024":["呪詛返し","無","呪",0,100,5,"B","呪われた書","受けた状態異常を相手に返す。自分の狂気↑",1],"NUL-025":["道連れ","無","呪",0,100,6,"A","呪われた書","次のターンに倒されたら相手も倒す",1],"NUL-027":["骨砕き","無","物理",160,80,8,"A","呪われた書","自分の防御↓（戦闘中ずっと）",1],"NUL-028":["禁忌の名","無","呪",0,100,6,"S","呪われた書","敵の全能力↓。戦闘後に絆が下がる",1],"NUL-029":["蝕み","無","呪",20,95,3,"B","呪われた書","敵と自分に毎ターン最大HPの8%ダメージ",1]};
+Object.assign(SK,{"PAS-001":["火の心", "火", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "火の技の威力+15%", 0],"PAS-002":["逆境の炎", "火", "パッシブ", 0, 100, 0, "B", "ひらめき／書", "HPが1/3以下のとき、与えるダメージ+30%", 0],"PAS-003":["潤い", "水", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "毎ターンHPが4%回復", 0],"PAS-004":["流転", "水", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "状態異常が早く治る", 0],"PAS-005":["軽身", "風", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "戦闘開始時に回避↑", 0],"PAS-006":["先駆け", "風", "パッシブ", 0, 100, 0, "B", "ひらめき／書", "戦闘の1ターン目は必ず先制する", 0],"PAS-007":["不動", "地", "パッシブ", 0, 100, 0, "B", "ひらめき／書", "能力を下げられない", 0],"PAS-008":["重量", "地", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "防御+15%、速さ-10%", 0],"PAS-009":["静電体", "雷", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "物理攻撃を受けると20%で相手を麻痺させる", 0],"PAS-010":["電光石火", "雷", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "速さ+12%", 0],"PAS-011":["冷血", "氷", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "急所に当たりやすい", 0],"PAS-012":["霜鎧", "氷", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "術防御+15%", 0],"PAS-013":["灯の加護", "光", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "戦闘に勝つと灯+3", 0],"PAS-014":["浄化体", "光", "パッシブ", 0, 100, 0, "B", "ひらめき／書", "3ターンごとに状態異常が治る", 0],"PAS-015":["夜目", "闇", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "命中が上がる", 0],"PAS-016":["闇の囁き", "闇", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "攻撃が当たると10%で恐怖を与える", 0],"PAS-017":["捕食本能", "無", "パッシブ", 0, 100, 0, "B", "ひらめき／書", "捕食で20%の確率で部位がもう1つ上がる", 0],"PAS-018":["健脚", "無", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "探索で歩いたときの回復量が2倍", 0],"PAS-019":["大食い", "無", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "捕食で腹が多く満たされる（+25→+40）", 0],"PAS-020":["根性", "無", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "戦闘ごとに1度だけ、倒れるダメージをHP1で耐える", 0],"PAS-021":["学習", "無", "パッシブ", 0, 100, 0, "C", "ひらめき／書", "ひらめきが起きやすい（2倍）", 0],"PAS-022":["交代上手", "無", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "交代で出たターンは受けるダメージ半減", 0],"PAS-023":["野生の勘", "無", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "逃げる成功率が40%→70%", 0],"PAS-024":["鉄の胃袋", "無", "パッシブ", 0, 100, 0, "D", "ひらめき／書", "腹が減っても力が落ちない", 0],"PAS-025":["貪食", "闇", "パッシブ", 0, 100, 0, "A", "呪われた書", "捕食で部位が必ずもう1つ上がる。戦闘開始時に狂気30%", 1],"PAS-026":["虚ろの器", "無", "パッシブ", 0, 100, 0, "A", "呪われた書", "全能力+10%。毎ターン狂気+8", 1]});
 const $=s=>document.querySelector(s);
 const rnd=n=>Math.floor(Math.random()*n);
 const pick=a=>a[rnd(a.length)];
@@ -94,6 +98,23 @@ pill:{p:{1:O,2:'#5F5E5A',3:'#F09595',4:'#888780'},d:["..........","...1111...","
 mold:{p:{1:O,2:'#3B6D11',3:'#EAF3DE',4:'#97C459'},d:["..........","....11....","..112211..",".12222221.","1223223221","1222222221","1242424221","1222222221",".11111111.",".........."]},
 mimic:{p:{0:'#0b0703',1:'#1a1209',2:'#633806',3:'#854F0B',4:'#F1EFE8',5:'#E24B4A',6:'#FAC775'},d:["..........",".11111111.","1333333331","1353333531","1414141411","1000000001","1141414141","1222662221","1222222221",".11111111."]},
 kage:{p:{1:'#0b0b0b',2:'#26215C',3:'#E24B4A',4:'#3C3489'},d:["1........1..","11......11..","1211111121..","1222222221.1","1232222321.1","122222222111",".12444422221","..1222222221",".14222222241",".141.11.141.","..1...1..1..","............"]},
+enki:{p:{1:O,2:"#D85A30",3:"#FAC775",4:"#EF9F27",5:"#712B13"},d:["...4.44.4...", "..4414414...", "..12222221..", ".1222222221.", ".1232222321.", "122222222221", "125222222521", ".1225335221.", ".1222222221.", "122122221221", "1551.11.1551", "111......111"]},
+mizu:{p:{1:O,2:"#378ADD",3:"#E6F1FB",4:"#85B7EB",5:"#0C447C"},d:["..1.....1...", ".141...141..", "..1222221...", ".122222221..", ".123222321..", ".122242221..", "..1222221...", "...12221.11.", "..1222221152", ".12211122222", ".1225222221.", "..11111111.."]},
+kaza:{p:{1:O,2:"#1D9E75",3:"#E1F5EE",4:"#EF9F27",5:"#085041"},d:["1..........1", "21...11...12", "521.1221.125", ".5212222125.", "..12322321..", "..12244221..", ".1522222251.", "152.1221.251", "21..1221..12", "1...1221...1", "....1111....", "...11..11..."]},
+iwao:{p:{1:O,2:"#BA7517",3:"#FAC775",4:"#888780",5:"#5F5E5A"},d:["...111111...", "..14444441..", ".1444444441.", ".1434444341.", ".1444554441.", "114444444411", "145222222541", "145233332541", "115222222511", ".1222222221.", ".1441..1441.", ".1111..1111."]},
+ikaz:{p:{1:O,2:"#FAC775",3:"#2C2C2A",4:"#EF9F27",5:"#BA7517"},d:["1.......1...", "141...141...", "142111241...", "1222222221.4", "1232222321.4", "1222222221.4", ".12255221.41", ".122222221.4", "12222222221.", "1221222212..", "151.1..151..", "11......11.."]},
+fubu:{p:{1:O,2:"#B5D4F4",3:"#0C447C",4:"#E6F1FB",5:"#85B7EB"},d:[".4...4...4..", ".44.444.44..", "..1111111...", ".122222221..", "12322222321.", "12222422221.", ".122222221..", "..1255521...", ".124444421..", "12442224421.", "12222222221.", ".11.1.1.11.."]},
+tera:{p:{1:O,2:"#FAEEDA",3:"#854F0B",4:"#EF9F27",5:"#FAC775"},d:["4....4....4.", ".4..141..4..", "...12221....", "..1255521...", ".125555521..", "41253535214.", ".125555521..", "..1255521...", "...12221....", ".4..141..4..", "4....4....4.", "............"]},
+nue:{p:{1:O,2:"#534AB7",3:"#F09595",4:"#2C2C2A",5:"#26215C"},d:[".1.....1....", "121...121...", "12211112211.", "1232222321..", "12224422221.", ".1222222215.", ".1252525211.", "122525252211", "122525252211", "12222222221.", "121.1..121..", "11..1..11..."]},
+shuu:{p:{1:O,2:"#85B7EB",3:"#2C2C2A",4:"#FAC775",5:"#378ADD"},d:["....1111....", "..11222211..", ".1222222221.", "122222222221", "123222222321", "122225522221", ".1555555551.", "..11111111..", ".4..5..5..4.", "..4..5..4...", ".5..4..5....", "....5.....5."]},
+jinr:{p:{1:O,2:"#EF9F27",3:"#2C2C2A",4:"#FAEEDA",5:"#BA7517"},d:[".....11.....", "....1221....", "1..122321..1", "21.122241.12", "521122221125", ".5522222255.", "..55222255..", "...122221...", "...125521...", "....1221....", "...1.11.1...", "..1..1..1..."]},
+youg:{p:{1:O,2:"#5F5E5A",3:"#FAC775",4:"#D85A30",5:"#EF9F27"},d:["............", "...111111...", "..14544541..", ".1454554541.", "145454454541", "122222222221", "1.1222222111", "..12322321..", "..12222221..", ".121.11.121.", ".11......11.", "............"]},
+taso:{p:{1:O,2:"#AFA9EC",3:"#2C2C2A",4:"#F0997B",5:"#534AB7"},d:["..1......1..", "...1....1...", "11..1111..11", "152122221251", "145212212541", "145523325541", "145522225541", ".1452222541.", "..14522541..", "...111111...", "....1..1....", "............"]},
+hiba:{p:{1:O,2:"#F0997B",3:"#2C2C2A",4:"#FAC775",5:"#D85A30"},d:["1.1.........", "121.......44", "1221.....4.4", "12321...45..", "122221.45...", ".1222111521.", ".12222222221", "..122222221.", "..15222251..", ".151.11.151.", ".11......11.", "............"]},
+hisa:{p:{1:O,2:"#E6F1FB",3:"#0C447C",4:"#85B7EB",5:"#B5D4F4"},d:["...111111...", "..12222221..", ".1222222221.", ".1232222321.", ".1222442221.", "..14444441..", ".1.4.44.4.1.", "...4.4..4...", "..4..4.4..4.", "..5..5..5...", ".5..4..5..5.", "............"]},
+numa:{p:{1:O,2:"#1D9E75",3:"#FAC775",4:"#85B7EB",5:"#085041"},d:["..11....11..", ".1331..1331.", ".1331111331.", "122222222221", "122222222221", "125111111521", ".1222222221.", "122252252221", "125222222521", ".1222222221.", "151.1111.151", "11........11"]},
+kaga:{p:{1:O,2:"#FAEEDA",3:"#2C2C2A",4:"#EF9F27",5:"#D85A30"},d:["....4..4....", "...454454...", "....1111....", "...122221...", "..12322321.4", "..122242214.", "4.1222222154", "451222222154", "45122222214.", ".4.1222221..", "...11..11...", "...1....1..."]},
+cage:{p:{1:O,2:"#5F5E5A",3:"#888780",4:"#B4B2A9",5:"#2a2a27"},d:["....1111....", "...144441...", "..11111111..", "..14.4.4.4.1", "..1.4.4.4.1.", "..14.4.4.41.", "..1.4.4.4.1.", "..14.4.4.41.", "..1111111111", "..13333331..", "..11111111..", "............"]},
 chuz:{p:{1:O,2:'#5F5E5A',3:'#E24B4A',4:'#EF9F27',5:'#F4C0D1'},d:["...4.4.4....",".1.44444.1..","141122211141","122222222221","123322223321","122222222221",".1222552221.","..1222222211",".12212212221",".1221221221.","..11.11..11.","............"]}
 };
 function drawSpr(key,k,flip){const s=SPR[key],w=s.d[0].length,h=s.d.length,c=document.createElement('canvas');c.width=w*k;c.height=h*k;const x=c.getContext('2d');if(flip){x.translate(w*k,0);x.scale(-1,1)}s.d.forEach((r,j)=>[...r].forEach((ch,i)=>{if(s.p[ch]){x.fillStyle=s.p[ch];x.fillRect(i*k,j*k,k,k)}}));return c}
@@ -106,7 +127,23 @@ const SP={
 シモツキ:{el:'氷',spr:'simo',fav:['core'],m:{hp:1.1,atk:.95,mag:1.05,def:1.1,res:1.2,spd:.9},sk:['ICE-001','ICE-004','NUL-001'],d:'霜を纏う狐。耐えて削る'},
 トモリ:{el:'光',spr:'tomo',fav:['head'],m:{hp:1,atk:.85,mag:1.25,def:.95,res:1.1,spd:1},sk:['LGT-001','LGT-004','NUL-001'],d:'浮かぶ灯籠の精。術型'},
 ヨドミ:{el:'闇',spr:'yodo',fav:['head','core'],m:{hp:.95,atk:.9,mag:1.2,def:.95,res:1.1,spd:1.05},sk:['DRK-001','DRK-004','NUL-001'],d:'一つ目の影。術と状態異常'},
-コハヤテ:{el:'風',spr:'koha',fav:['leg'],m:{hp:1,atk:1.15,mag:1,def:1,res:1,spd:1.35},sk:['WND-001','WND-002','WND-008'],d:'ハヤテドリの幼体。1ターン目だけ2回行動',trait:'double1',big:1}
+コハヤテ:{el:'風',spr:'koha',fav:['leg'],m:{hp:1,atk:1.15,mag:1,def:1,res:1,spd:1.35},sk:['WND-001','WND-002','WND-008'],d:'ハヤテドリの幼体。1ターン目だけ2回行動',trait:'double1',big:1},
+エンキ:{el:'火',spr:'enki',fav:['arm','head'],m:{hp:1.1,atk:1.3,mag:1.1,def:1.05,res:.95,spd:1},sk:['FIR-002','FIR-005','FIR-008'],d:'炎のたてがみの鬼獣。火の技を極める',trait:'elpow',big:1,breed:1},
+ミズチ:{el:'水',spr:'mizu',fav:['body','core'],m:{hp:1.15,atk:1,mag:1.15,def:1,res:1.1,spd:1.1},sk:['WAT-002','WAT-005','WAT-008'],d:'角のある水の大蛇。傷を癒しながら戦う',trait:'regen',big:1,breed:1},
+カザキリ:{el:'風',spr:'kaza',fav:['leg','arm'],m:{hp:.95,atk:1.2,mag:1.05,def:.95,res:.95,spd:1.4},sk:['WND-002','WND-005','WND-008'],d:'刃の翼を持つ風の鷹。誰よりも速い',trait:'swift',big:1,breed:1},
+イワオ:{el:'地',spr:'iwao',fav:['body','core'],m:{hp:1.35,atk:1.1,mag:.8,def:1.45,res:1.1,spd:.7},sk:['ERT-002','ERT-005','ERT-008'],d:'岩の巨人。とにかく硬い',trait:'thick',big:1,breed:1},
+イカヅチ:{el:'雷',spr:'ikaz',fav:['leg','arm'],m:{hp:1,atk:1.25,mag:1.1,def:.95,res:.95,spd:1.3},sk:['THN-002','THN-005','THN-008'],d:'雷を呼ぶ雷獣。雷の技を極める',trait:'elpow',big:1,breed:1},
+フブキ:{el:'氷',spr:'fubu',fav:['core','head'],m:{hp:1.15,atk:.95,mag:1.2,def:1.15,res:1.3,spd:.95},sk:['ICE-002','ICE-005','ICE-008'],d:'氷の冠の雪獣。凍えさせて削る',trait:'stcast',big:1,breed:1},
+テラス:{el:'光',spr:'tera',fav:['head'],m:{hp:1.05,atk:.9,mag:1.4,def:1,res:1.2,spd:1.05},sk:['LGT-002','LGT-005','LGT-008'],d:'小さな日輪の精。灯を呼び込む',trait:'lampwin',big:1,breed:1},
+ヌエ:{el:'闇',spr:'nue',fav:['head','core'],m:{hp:1.05,atk:1.1,mag:1.25,def:1,res:1.1,spd:1.1},sk:['DRK-002','DRK-005','DRK-008'],d:'縞の体の合成獣。気をよく練る',trait:'kiplus',big:1,breed:1},
+シュウウ:{el:'水',spr:'shuu',fav:['head'],m:{hp:1.05,atk:.95,mag:1.3,def:1,res:1.15,spd:1.15},sk:['WAT-005','THN-005','WAT-007'],d:'雨を降らす雲。濡らして雷を通す',trait:'wet',big:1,breed:2},
+ジンライ:{el:'雷',spr:'jinr',fav:['leg'],m:{hp:.95,atk:1.3,mag:1,def:.9,res:.9,spd:1.5},sk:['THN-002','WND-002','WND-008'],d:'雷光の隼。最初のターンに2回動く',trait:'double1',big:1,breed:2},
+ヨウガメ:{el:'地',spr:'youg',fav:['body'],m:{hp:1.4,atk:1.15,mag:1.05,def:1.4,res:1.1,spd:.65},sk:['ERT-002','FIR-005','ERT-008'],d:'溶岩の甲羅の亀。触れたものを焦がす',trait:'burn',big:1,breed:2},
+タソガレ:{el:'闇',spr:'taso',fav:['head','core'],m:{hp:1.05,atk:1,mag:1.35,def:1.05,res:1.25,spd:1.1},sk:['DRK-005','LGT-005','LGT-010'],d:'黄昏の蛾。狂気に呑まれない',trait:'madless',big:1,breed:2},
+ヒバシリ:{el:'火',spr:'hiba',fav:['leg','arm'],m:{hp:.95,atk:1.3,mag:1,def:.9,res:.9,spd:1.45},sk:['FIR-002','WND-002','FIR-008'],d:'尾に火のついた狐。駆け抜けて焦がす',trait:'burn',big:1,breed:2},
+ヒサメ:{el:'氷',spr:'hisa',fav:['core'],m:{hp:1.1,atk:.9,mag:1.3,def:1.05,res:1.3,spd:1.05},sk:['ICE-005','WAT-007','ICE-008'],d:'氷雨のくらげ。凍てつきを撒く',trait:'stcast',big:1,breed:2},
+ヌマヌシ:{el:'水',spr:'numa',fav:['body'],m:{hp:1.4,atk:1.1,mag:1,def:1.25,res:1.15,spd:.8},sk:['WAT-002','ERT-002','WAT-010'],d:'沼の主の大蛙。しぶとく居座る',trait:'regen',big:1,breed:2},
+カガリ:{el:'光',spr:'kaga',fav:['head','arm'],m:{hp:1.05,atk:1.1,mag:1.3,def:1,res:1.1,spd:1.1},sk:['LGT-005','FIR-005','LGT-008'],d:'篝火をかぶった鳥。灯を絶やさない',trait:'lampwin',big:1,breed:2},
 };
 const STARTERS=['ホムラ','ミナモ','ツムジ','ゴロタ','ハジキ','シモツキ','トモリ','ヨドミ'];
 const FOES={
@@ -118,8 +155,8 @@ const FOES={
 ゴロタ:{wild:1,el:'地',spr:'gaki',ch:'G',fav:'body',sk:['ERT-004','ERT-001'],seal:'ERT-004',m:SP.ゴロタ.m},
 ミミック:{el:'無',spr:'mimic',ch:'',fav:'arm',sk:['NUL-003','NUL-004','NUL-002'],seal:'NUL-003',m:{hp:1.2,atk:1.15,mag:.8,def:1.1,res:1,spd:.9},plus:3},
 カゲクイ:{el:'闇',spr:'kage',ch:'',fav:'arm',sk:['DRK-003','DRK-001','DRK-007','DRK-002'],seal:'DRK-003',m:{hp:1.5,atk:1.2,mag:1.1,def:1.1,res:1.1,spd:1.1},plus:8,shadow:1},
-チュウザン:{boss:5,el:'地',spr:'chuz',ch:'B',fav:'arm',sk:['ERT-002','NUL-004','NUL-007','ERT-001'],m:{hp:1.8,atk:1,mag:.9,def:1,res:1,spd:.9},core:'ゴロタ',gim:'minion'},
-ハヤテドリ:{boss:10,el:'風',spr:'haya',ch:'B',fav:'leg',sk:['WND-002','WND-006','WND-008','WND-004'],m:{hp:2.8,atk:1.05,mag:1.05,def:1,res:1,spd:1.1},core:'コハヤテ',gim:'double'}
+チュウザン:{boss:5,el:'地',spr:'chuz',ch:'B',fav:'arm',sk:['ERT-002','NUL-004','NUL-007','ERT-001'],m:{hp:1.8,atk:1,mag:.9,def:1,res:1,spd:.9},core:'ゴロタ',gim:'minion',say:'……灯の匂い。久しぶりだ。置いていけ',fall:'巣の子らを……頼む……'},
+ハヤテドリ:{boss:10,el:'風',spr:'haya',ch:'B',fav:'leg',sk:['WND-002','WND-006','WND-008','WND-004'],m:{hp:2.8,atk:1.05,mag:1.05,def:1,res:1,spd:1.1},core:'コハヤテ',gim:'double',say:'風の止んだこの洞で、まだ飛ぼうとするのか',fall:'……ああ、風が、戻ってきた'}
 };
 const EFF={
 'FIR-007':{st:'火傷'},'FIR-008':{buff:[['atk',1,3]]},'FIR-009':{debuff:[['acc',1,3]]},'FIR-010':{regen:[8,3]},'FIR-013':{prio:1},'FIR-015':{selfSt:'火傷'},
@@ -139,7 +176,7 @@ const BIOME='苔の浅層';
 /* ---------- state ---------- */
 const KEY='hikui-proto-v1';
 let G=null,R=null,B=null,UI={modal:null};
-function newG(){return{mons:[],active:0,cores:[],bag:{herb:2,meat:1,lantern:0,books:[],shards:0,val:{},smoke:1},bank:0,mix:{},fac:{},st:{},ach:{},cleared:{},best:0,screen:'title',uid:1}}
+function newG(){return{mons:[],active:0,cores:[],bag:{herb:2,meat:1,lantern:0,books:[],shards:0,val:{},smoke:1},bank:0,mix:{},fac:{},st:{},ach:{},cleared:{},best:0,screen:'title',uid:1,ver:GVER,cfg:defCfg(),tut:{}}}
 const KEYR='hikui-run-v1';
 function save(){try{localStorage.setItem(KEY,JSON.stringify(G))}catch(e){}saveRun()}
 function saveRun(){try{if(R&&G.screen==='map'&&!UI.modal)localStorage.setItem(KEYR,JSON.stringify(R));else if(!R)localStorage.removeItem(KEYR)}catch(e){}}
@@ -160,10 +197,10 @@ function importMenu(){modal('引き継ぎコードを読み込む',`<textarea id
  ['読み込む',()=>{const ta=$('#impt'),fi=$('#impf');const go=s=>{try{const d=importCode(s);applyImport(d);toast('データを読み込んだ')}catch(e){setTimeout(()=>modal('読み込めなかった',e.message,[['とじる',null]]),0)}};if(fi&&fi.files&&fi.files[0]){fi.files[0].text().then(go)}else go(ta?ta.value:'')}],['やめる',null]])}
 
 function load(){try{const s=localStorage.getItem(KEY);if(s)return JSON.parse(s)}catch(e){}return null}
-function mkMon(sp){const m={id:G.uid++,sp,parts:{head:1,arm:1,body:1,leg:1,core:1},learned:[...SP[sp].sk],equip:[...SP[sp].sk],bond:1};return m}
+function mkMon(sp){const m={id:G.uid++,sp,parts:{head:1,arm:1,body:1,leg:1,core:1},learned:[...SP[sp].sk],equip:[...SP[sp].sk],bond:1,bw:0,base:{},apt:{},pass:[],omen:0,bunto:0,gen:1};return m}
 function monById(id){return G.mons.find(m=>m.id===id)}
 function cur(){if(R&&R.lead!=null){const m=monById(R.lead);if(m)return m}return G.mons[G.active]}
-function maxHp(m){return stats(m.parts,SP[m.sp].m).hp}
+function maxHp(m){return mstats(m).hp}
 function pSlots(){return 1+(G.cleared[5]?1:0)+(G.cleared[10]?1:0)}
 function partyIds(){if(!G.mons.length)return[];const busy=new Set((G.exp||[]).map(x=>x.id));if(!G.party||!G.party.length)G.party=[(G.mons[G.active]||G.mons[0]).id];G.party=G.party.filter(id=>monById(id)&&!busy.has(id)).slice(0,pSlots());if(!G.party.length){const f=G.mons.find(m=>!busy.has(m.id))||G.mons[0];G.party=[f.id]}return G.party}
 function bindHP(){Object.defineProperty(R,'hp',{get(){return R.hps[R.lead]},set(v){R.hps[R.lead]=v},configurable:true,enumerable:false})}
@@ -177,8 +214,8 @@ function elTag(el){return `<span class="tag" style="color:${ELC[el]}">${el}</spa
 function skHTML(id){const s=SK[id];return `<span style="color:${ELC[s[1]]}">${s[0]}</span>`}
 /* ---------- render ---------- */
 const app=$('#app');
-function render(){if(typeof bgm==='function')bgm(bgmFor());if(G&&['camp','summary','party','mon'].includes(G.screen)&&typeof dexScan==='function')dexScan();app.innerHTML='';app.classList.remove('fit');const f={title:rTitle,pick:rPick,camp:rCamp,mon:rMon,map:rMap,battle:rBattle,result:rResult,summary:rSummary,fuse:rFuse,party:rParty,fac:rFac,dex:rDex,ach:rAch}[G.screen];f();topBar();rModal();save()}
-function topBar(){if(!['mon','fuse','party','fac','dex','ach'].includes(G.screen))return;const bs=[...app.querySelectorAll('button')].filter(b=>b.textContent.trim()==='もどる');const back=bs[bs.length-1];if(!back)return;back.remove();const hd=app.firstElementChild;const bar=document.createElement('div');bar.className='topbar';const bb=btn('◀ もどる',()=>back.onclick());bb.className='backbtn';bar.appendChild(bb);app.insertBefore(bar,hd);if(hd){hd.style.flex='1';hd.style.minWidth='0';bar.appendChild(hd)}if(UI.lastScr!==G.screen)window.scrollTo(0,0);UI.lastScr=G.screen}
+function render(){if(typeof bgm==='function')bgm(bgmFor());if(G&&['camp','summary','party','mon','breed'].includes(G.screen)&&typeof dexScan==='function')dexScan();app.innerHTML='';app.classList.remove('fit');const f={title:rTitle,pick:rPick,camp:rCamp,mon:rMon,map:rMap,battle:rBattle,result:rResult,summary:rSummary,fuse:rFuse,party:rParty,fac:rFac,dex:rDex,ach:rAch,breed:rBreed,cfg:rCfg}[G.screen];f();topBar();rModal();save()}
+function topBar(){if(!['mon','fuse','party','fac','dex','ach','breed','cfg'].includes(G.screen))return;const bs=[...app.querySelectorAll('button')].filter(b=>b.textContent.trim()==='もどる');const back=bs[bs.length-1];if(!back)return;back.remove();const hd=app.firstElementChild;const bar=document.createElement('div');bar.className='topbar';const bb=btn('◀ もどる',()=>back.onclick());bb.className='backbtn';bar.appendChild(bb);app.insertBefore(bar,hd);if(hd){hd.style.flex='1';hd.style.minWidth='0';bar.appendChild(hd)}if(UI.lastScr!==G.screen)window.scrollTo(0,0);UI.lastScr=G.screen}
 function el(h){const d=document.createElement('div');d.innerHTML=h;return d}
 function btn(label,fn,cls){const fn0=fn;fn=function(){sfx('click');return fn0.apply(this,arguments)};const b=document.createElement('button');b.innerHTML=label;if(cls)b.className=cls;b.onclick=fn;return b}
 function modal(title,body,buttons){UI.modal={title,body,buttons};rModal()}
@@ -190,7 +227,7 @@ function rTitle(){
  const c=el('');c.style.cssText='display:flex;justify-content:center;gap:10px;margin:24px 0';['hino','tumu','yodo'].forEach(k=>c.appendChild(drawSpr(k,5)));app.appendChild(c);
  const has=G.mons.length>0;
  if(has)app.appendChild(btn('つづきから',()=>{G.screen='camp';render()}));
- app.appendChild(btn(has?'はじめから（記録を消す）':'はじめる',()=>{if(has){modal('記録を消しますか？','今の記録はすべて消えます。',[['消してはじめる',()=>{G=newG();G.screen='pick'}],['やめる',null]])}else{G.screen='pick';render()}}));
+ app.appendChild(btn(has?'はじめから（記録を消す）':'はじめる',()=>{if(has){modal('記録を消しますか？','今の記録はすべて消えます。',[['消してはじめる',()=>{G=newG();G.screen='pick';setTimeout(()=>prologue(0),0)}],['やめる',null]])}else{G.screen='pick';render();prologue(0)}}));
  app.appendChild(btn('<span class="m">データの引き継ぎ（コードを読み込む）</span>',importMenu));app.appendChild(el(`<div class="m s bx" style="margin-top:12px">遊び方：灯を分けたモンスターと深層に潜る。敵を倒したら「捕食」で部位を育てるか、「封印」でスキルを奪うか選ぶ。灯が尽きると強制帰還、倒れると今回上がった部位Lvの半分を失う。</div>`));
 }
 let pickSel=null;
@@ -200,42 +237,50 @@ function rPick(){
  STARTERS.forEach(n=>{const c=document.createElement('div');c.className='card'+(pickSel===n?' sel':'');const cv=drawSpr(SP[n].spr,4);cv.style.margin='0 auto';c.appendChild(cv);c.appendChild(el(`<div class="s">${n}</div><div class="s" style="color:${ELC[SP[n].el]}">${SP[n].el}</div>`));c.onclick=()=>{pickSel=n;render()};g.appendChild(c)});
  app.appendChild(g);
  if(pickSel){const s=SP[pickSel];app.appendChild(el(`<div class="bx"><div class="row"><span class="y">${pickSel}</span>${elTag(s.el)}</div><div class="s">${s.d}</div><div class="s m">得意：${s.fav.map(k=>PN[k]).join('／')}</div><div class="s">初期スキル：${s.sk.map(skHTML).join('、')}</div></div>`));
- app.appendChild(btn(`${pickSel}と契約する`,()=>{G.mons=[mkMon(pickSel)];G.active=0;G.screen='camp';modal('契約した',`${pickSel}に灯を分けた。<br>まずはB1から潜ってみよう。`,[['野営地へ',null]])}))}
+ app.appendChild(btn(`${pickSel}と契約する`,()=>{G.mons=[mkMon(pickSel)];G.active=0;G.screen='camp';modal('契約した',`${pickSel}に、最後の灯を分けた。<br>小さな体に、ぽっと火がともる。<br><span class="s m">まずはB1から潜ってみよう。</span>`,[['野営地へ',null]])}))}
 }
-function monHead(m,k){const w=el('');w.style.cssText='display:flex;gap:10px;align-items:center';w.appendChild(drawSpr(SP[m.sp].spr,SP[m.sp].big?5:k||6));const st=stats(m.parts,SP[m.sp].m);w.appendChild(el(`<div><span class="y">${m.sp}</span> ${elTag(SP[m.sp].el)} <span class="p s">ランク${rank(m.parts)}</span><div class="s m">HP ${st.hp}　力 ${st.atk}　術 ${st.mag}</div><div class="s m">守 ${st.def}　抗 ${st.res}　速 ${st.spd}</div></div>`));return w}
+function monHead(m,k){const w=el('');w.style.cssText='display:flex;gap:10px;align-items:center';w.appendChild(drawSpr(monSpr(m),SP[m.sp].big?5:k||6));const st=mstats(m);w.appendChild(el(`<div><span class="y">${m.sp}</span> ${elTag(SP[m.sp].el)}${m.alt?' <span class="tag p">亜種</span>':''} <span class="p s">ランク${rank(m.parts)}</span><div class="s m">HP ${st.hp}　力 ${st.atk}　術 ${st.mag}</div><div class="s m">守 ${st.def}　抗 ${st.res}　速 ${st.spd}</div><div class="s"><span class="p">絆${'★'.repeat(m.bond||1)}${'☆'.repeat(5-(m.bond||1))}</span>${(m.gen||1)>1?` <span class="m">第${m.gen}世代</span>`:''}</div></div>`));return w}
 function rCamp(){
  app.appendChild(el(`<div class="row"><span class="y">野営地</span><span class="m s">${G.title?'<span class="p">〈'+G.title+'〉</span>　':''}最深到達 B${G.best}</span></div>`));
- const b=el('');b.className='bx';b.appendChild(el(`<div class="m s" style="text-align:center">― 焚き火がはぜる ―</div>`));b.appendChild(monHead(monById(partyIds()[0])||cur()));if(partyIds().length>1)b.appendChild(el(`<div class="s m" style="margin-top:4px">同行：${partyIds().slice(1).map(id=>monById(id).sp).join('、')}</div>`));app.appendChild(b);
+ const b=el('');b.className='bx';b.appendChild(el(`<div class="m s" style="text-align:center;line-height:1.6">${murmur()}</div>`));b.appendChild(monHead(monById(partyIds()[0])||cur()));if(partyIds().length>1)b.appendChild(el(`<div class="s m" style="margin-top:4px">同行：${partyIds().slice(1).map(id=>monById(id).sp).join('、')}</div>`));app.appendChild(b);
  if(UI.campMsg){app.appendChild(el(`<div class="bx s y">${UI.campMsg}</div>`));UI.campMsg=null}
  const starts=[1];if(G.cleared[5])starts.push(6);
  starts.forEach(s=>app.appendChild(btn(`潜行する（B${s}から）`,()=>startRun(s))));
  if(G.cores.length)app.appendChild(btn(`灯の核を目覚めさせる（${G.cores.length}）`,()=>{const c=G.cores.shift();const m=mkMon(c);G.mons.push(m);modal('灯の核が目覚めた',`<div style="display:flex;justify-content:center" id="cv"></div>${c}が仲間になった！`,[['よし',null]]);setTimeout(()=>{const x=$('#cv');x&&x.appendChild(drawSpr(SP[c].spr,6))},0)}));
  const g1=document.createElement('div');g1.className='g2';g1.appendChild(btn('個体・スキル装備',()=>{G.screen='mon';render()}));g1.appendChild(btn(`仲間・同行（${partyIds().length}/${pSlots()}）`,()=>{G.screen='party';render()}));app.appendChild(g1);
- const g3=document.createElement('div');g3.className='g4';g3.appendChild(G.best>=10?btn('融合の炉',()=>{UI.fz={a:null,b:null};G.screen='fuse';render()}):btn('<span class="m">融合の炉</span>',()=>modal('融合の炉','B10に到達すると使えるようになる。<br><span class="s m">スキル2つを組み合わせて、新しいスキルを編み出す施設。</span>',[['とじる',null]])));g3.appendChild(btn('道具屋',campShop));g3.appendChild(btn('金庫',bankMenu));g3.appendChild(btn(`換金所${valCount()?'('+valCount()+')':''}`,sellMenu));app.appendChild(g3);
- const g4=document.createElement('div');g4.className='g4';g4.appendChild(btn('施設',()=>{G.screen='fac';render()}));g4.appendChild(btn(fl('expe')?`遠征${(G.exp||[]).length?'('+(G.exp||[]).length+')':''}`:'<span class="m">遠征</span>',expeMenu));g4.appendChild(btn('図鑑',()=>{G.screen='dex';render()}));g4.appendChild(btn('実績',()=>{G.screen='ach';render()}));app.appendChild(g4);
+ const lk=(n,ok,msg,fn)=>ok?btn(n,fn):btn(`<span class="m">${n}</span>`,()=>modal(n,msg,[['とじる',null]]));
+ const g3=document.createElement('div');g3.className='g4';
+ g3.appendChild(lk('融合の炉',G.best>=10,'B10に到達すると使えるようになる。<br><span class="s m">スキル2つを組み合わせて、新しいスキルを編み出す施設。</span>',()=>{UI.fz={a:null,b:null};G.screen='fuse';render()}));
+ g3.appendChild(lk('灯合わせ',breedOpen(),`B${BREED_AT}に到達すると使えるようになる。<br><span class="s m">試遊版の間は、B10のボスを倒すと解放。<br>2体の仲間を合わせて新しい種族を生む。</span>`,()=>{UI.br={a:null,b:null,ka:[],kb:[]};G.screen='breed';render()}));
+ g3.appendChild(btn('施設',()=>{G.screen='fac';render()}));g3.appendChild(btn(fl('expe')?`遠征${(G.exp||[]).length?'('+(G.exp||[]).length+')':''}`:'<span class="m">遠征</span>',expeMenu));app.appendChild(g3);
+ const g4=document.createElement('div');g4.className='g4';g4.appendChild(btn('道具屋',campShop));g4.appendChild(btn('金庫',bankMenu));g4.appendChild(btn(`換金所${valCount()?'('+valCount()+')':''}`,sellMenu));g4.appendChild(btn('図鑑',()=>{G.screen='dex';render()}));app.appendChild(g4);
+ const g5=document.createElement('div');g5.className='g2';g5.appendChild(btn('実績',()=>{G.screen='ach';render()}));g5.appendChild(btn('設定',()=>{G.screen='cfg';render()}));app.appendChild(g5);
  const bag=G.bag;app.appendChild(el(`<div class="bx s"><span class="y">持ち物</span>　灯片 ${bag.shards}（金庫 ${G.bank}）<br>${itSummary()}　灯籠 ${bag.lantern}　書 ${bag.books.length}</div>`));
  app.appendChild(btn('持ち物を使う（書・育成アイテム）',campItems));
- app.appendChild(btn('<span class="m">見た目確認：階層帯を選んで潜る</span>',()=>modal('階層帯の見た目を試す','タイルや置物の見た目を確認できます。<br><span class="s m">敵や階の構成はB1と同じです。</span>',THEMES.map((T,i)=>[`${i+1}. ${T.n}`,()=>{setTimeout(()=>startRun(1,i),0)}]).concat([['やめる',null]]))));
- app.appendChild(btn('データの引き継ぎ',transferMenu));app.appendChild(sndBtns());app.appendChild(btn('タイトルへ',()=>{G.screen='title';render()},'dim'));
+ app.appendChild(btn('タイトルへ',()=>{G.screen='title';render()},'dim'));
+ if(G.best>0)tip('camp');if(pSlots()>=2)tip('party');if(G.best>=10)tip('fuse');if(G.best>=5)tip('bunto');if(breedOpen())tip('breed');if(fl('expe')||G.best>=30)tip('expe');
 }
 function rMon(){
  const m=cur();app.appendChild(el(`<div class="row"><span class="y">個体</span></div>`));
  const b=el('');b.className='bx';b.appendChild(monHead(m));app.appendChild(b);
- const pb=el('');pb.className='bx';pb.innerHTML='<div class="y s">部位</div>'+PARTS.map(k=>`<div class="row s"><span>${PN[k]}${SP[m.sp].fav.includes(k)?'<span class="y">＊</span>':''}</span><span style="display:flex;gap:6px;align-items:center;width:62%"><span class="bar"><i style="width:${Math.min(100,m.parts[k]*2)}%"></i></span>Lv${m.parts[k]}</span></div>`).join('')+'<div class="m s">＊得意部位（捕食で上がりやすい）</div>';app.appendChild(pb);
+ const pb=el('');pb.className='bx';pb.innerHTML='<div class="y s">部位</div>'+PARTS.map(k=>{const bs=(m.base||{})[k]||0,ap=(m.apt||{})[k]||0;return `<div class="row s"><span>${PN[k]}${SP[m.sp].fav.includes(k)?'<span class="y">＊</span>':''}${ap?'<span class="g">'+'＋'.repeat(ap)+'</span>':''}</span><span style="display:flex;gap:6px;align-items:center;width:62%"><span class="bar"><i style="width:${Math.min(100,(m.parts[k]+bs)*2)}%"></i></span>Lv${m.parts[k]}${bs?'<span class="g">+'+bs+'</span>':''}</span></div>`}).join('')+`<div class="m s">＊得意部位　<span class="g">＋</span>素質（捕食で上がりやすい）${baseSum(m)?'　<span class="g">+n</span>素質値':''}</div>`;app.appendChild(pb);
+ {const S0=SP[m.sp];const inf=[];if(S0.trait)inf.push(`特性：${TRAITD[S0.trait]}`);if(m.alt)inf.push(`<span class="p">亜種：${STATN2[m.sub]}+10%</span>`);inf.push(`絆${m.bond||1}${(m.bond||1)<5?`（次まで あと${12-(m.bw||0)}勝）`:''}`);if(G.best>=5)inf.push(`分灯 ${m.bunto||0}/3${m.omen?`　<span class="p">兆し+${Math.round(m.omen*100)}%</span>`:''}`);app.appendChild(el(`<div class="bx s">${inf.join('<br>')}</div>`))}
+ {const ps=m.learned.filter(isPas),sl=passSlots(m);m.pass=(m.pass||[]).filter(id=>m.learned.includes(id)).slice(0,sl);app.appendChild(el(`<div class="y s">パッシブ（装備 ${m.pass.length}/${sl}）<span class="m">― ランクで枠が増える</span></div>`));if(!ps.length)app.appendChild(el('<div class="s m bx">まだ覚えていない（心得の書・ひらめき・灯合わせで覚える）</div>'));ps.forEach(id=>{const on=m.pass.includes(id);app.appendChild(btn(`<div class="row"><span>${on?'■':'□'} ${skHTML(id)}${SK[id][9]?' <span class="r">［呪］</span>':''}</span><span class="s m">${SK[id][6]}</span></div><div class="s m" style="text-align:left">${SK[id][8]}</div>`,()=>{if(on)m.pass=m.pass.filter(x=>x!==id);else if(m.pass.length<sl)m.pass.push(id);else toast(`パッシブ枠は${sl}つまで`);render()}))})}
  app.appendChild(el(`<div class="y s">スキル（装備 ${m.equip.length}/6）― タップで付け外し</div>`));
  app.appendChild(chipBar(UI.sf,SKSORT,render));
  sfApply(m.learned).forEach(id=>{const s=SK[id],on=m.equip.includes(id);app.appendChild(btn(`<div class="row"><span>${on?'■':'□'} ${skHTML(id)} <span class="m s">${s[2]}</span></span><span class="s m">気${s[5]}${s[3]?' 威'+s[3]:''}</span></div><div class="s m" style="text-align:left">${s[8]||(s[2]==='物理'||s[2]==='術'?'攻撃':'')}${s[9]?' <span class="r">［呪］</span>':''}</div>`,()=>{if(on){if(m.equip.length>1)m.equip=m.equip.filter(x=>x!==id)}else if(m.equip.length<6)m.equip.push(id);render()}))});
+ {const g=document.createElement('div');g.className='g2';g.appendChild(G.best>=5?btn(`分灯${(m.bunto||0)>=3?'（済）':''}`,()=>buntoMenu(m)):btn('<span class="m">分灯</span>',()=>buntoMenu(m)));g.appendChild(btn('<span class="m">灯に還す</span>',()=>release(m)));app.appendChild(g)}
  app.appendChild(btn('もどる',()=>{G.screen='camp';render()}));
 }
 /* ---------- books ---------- */
-function bookPool(cursed){return Object.keys(SK).filter(id=>{const s=SK[id];if(cursed)return s[9];return !s[9]&&s[7]!=='融合'&&!/-013$/.test(id)&&'EDCB'.includes(s[6])})}
+function bookPool(cursed){return Object.keys(SK).filter(id=>{const s=SK[id];if(cursed)return s[9];return !s[9]&&s[7]!=='融合'&&s[2]!=='パッシブ'&&!/-013$/.test(id)&&'EDCB'.includes(s[6])})}
 function rollBook(){const cursed=Math.random()<.22;return pick(bookPool(cursed))}
-function bookName(b){return typeof b==='object'?`書：${SK[b.id][0]}${SK[b.id][9]?' <span class="r">［呪］</span>':''} <span class="s m">${SK[b.id][6]}</span>`:`未鑑定の書（${b}）`}
-function readBook(i){i=i||0;const b=G.bag.books.splice(i,1)[0];const id=typeof b==='object'?b.id:rollBook();if(SK[id][9])stat('curse');const m=cur();const msg=learn(m,id);modal(`${bookName(b)}を読んだ`,`${SK[id][9]?'<span class="r">呪われた書だった！</span><br>':''}${skHTML(id)}を覚えた。<br><span class="s m">${SK[id][8]||''}</span><br>${msg}`,[['とじる',null]])}
+function bookName(b){return typeof b==='object'?`${isPas(b.id)?'心得の書':'書'}：${SK[b.id][0]}${SK[b.id][9]?' <span class="r">［呪］</span>':''} <span class="s m">${SK[b.id][6]}</span>`:`未鑑定の書（${b}）`}
+function readBook(i){i=i||0;const b=G.bag.books.splice(i,1)[0];const id=typeof b==='object'?b.id:rollBook();if(SK[id][9]){stat('curse');tip('curse')}const m=cur();const msg=learn(m,id);modal(`${bookName(b)}を読んだ`,`${SK[id][9]?'<span class="r">呪われた書だった！</span><br>':''}${skHTML(id)}を覚えた。<br><span class="s m">${SK[id][8]||''}</span><br>${msg}`,[['とじる',null]])}
 function bookMenu(){const bs=G.bag.books.map((b,i)=>[bookName(b),()=>setTimeout(()=>bookAct(i),0)]);bs.push(['とじる',null]);modal('書',`${cur().sp}が読む。<span class="s m">虫眼鏡 ${itCnt('lens')}</span>`,bs)}
 function bookAct(i){const b=G.bag.books[i];if(b===undefined)return;const bs=[[`${cur().sp}が読む`,()=>setTimeout(()=>readBook(i),0)]];if(typeof b!=='object'&&itCnt('lens'))bs.push(['虫眼鏡で鑑定する',()=>{G.bag.lens--;G.bag.books[i]={c:b,id:rollBook()};setTimeout(()=>bookAct(i),0)}]);bs.push(['捨てる',()=>{G.bag.books.splice(i,1);setTimeout(bookMenu,0)}]);bs.push(['もどる',()=>setTimeout(bookMenu,0)]);
  const info=typeof b==='object'?`<br><span class="s">${SK[b.id][2]}　威力${SK[b.id][3]||'―'}　気${SK[b.id][5]}</span><br><span class="s m">${SK[b.id][8]||''}</span>${cur().learned.includes(b.id)?'<br><span class="m s">すでに覚えている</span>':''}`:'<br><span class="s m">読むまで中身は分からない（約2割で呪い）</span>';modal(bookName(b),info,bs)}
-function learn(m,id){if(m.learned.includes(id))return '<span class="m">すでに覚えていた</span>';m.learned.push(id);if(R&&R.got)R.got.skills.push(id);if(m.equip.length<6){m.equip.push(id);return '装備した'}return '<span class="m">装備枠がいっぱい（野営地で付け替え）</span>'}
+function learn(m,id){if(m.learned.includes(id))return '<span class="m">すでに覚えていた</span>';m.learned.push(id);if(R&&R.got)R.got.skills.push(id);if(isPas(id)){tip('pass');m.pass=m.pass||[];if(m.pass.length<passSlots(m)){m.pass.push(id);return 'パッシブ枠に装備した'}return '<span class="m">パッシブ枠がいっぱい（個体画面で付け替え）</span>'}if(m.equip.length<6){m.equip.push(id);return '装備した'}return '<span class="m">装備枠がいっぱい（野営地で付け替え）</span>'}
 /* ---------- pixel textures ---------- */
 function mkC(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c}
 let SEED=1;function srand(s){SEED=s}function sr(){SEED=(SEED*16807)%2147483647;return(SEED-1)/2147483646}
@@ -368,7 +413,7 @@ useTheme(0);
 /* ---------- dungeon ---------- */
 const MW=30,MH=30,VW=9,VH=9,TS=16;
 const BUF=mkC(VW*TS,VH*TS),DARK=mkC(VW*TS,VH*TS);
-function startRun(f,th){G.best=Math.max(G.best,f);const m=cur();R={theme:th!=null?th:themeOf(f),chain:0,floor:f,lamp:100+(G.lampBonus||0),lampMax:100+(G.lampBonus||0),hunger:100,steps:0,gains:{head:0,arm:0,body:0,leg:0,core:0},hp:stats(m.parts,SP[m.sp].m).hp,log:[],face:1,keys:0};{const ids=partyIds();R.hps={};ids.forEach(id=>R.hps[id]=maxHp(monById(id)));R.lead=ids[0];R.party=[...ids];R.gby={};delete R.hp;bindHP()}{const fv=fl('fire');R.lamp+=[0,5,10,15,20][fv-1];R.lampMax+=[0,5,10,15,20][fv-1];if(fv>=3){G.bag.herb=(G.bag.herb||0)+1}if(fv>=5){R.ward={v:.7,n:1}}}snapRun();useTheme(R.theme);genFloor();G.screen='map';rlog(`B${f} ${THEMES[R.theme].n}に降り立った`);render()}
+function startRun(f,th){G.best=Math.max(G.best,f);const m=cur();R={theme:th!=null?th:themeOf(f),chain:0,floor:f,lamp:100+(G.lampBonus||0),lampMax:100+(G.lampBonus||0),hunger:100,steps:0,gains:{head:0,arm:0,body:0,leg:0,core:0},hp:mstats(m).hp,log:[],face:1,keys:0};{const ids=partyIds();R.hps={};ids.forEach(id=>R.hps[id]=maxHp(monById(id)));R.lead=ids[0];R.party=[...ids];R.gby={};delete R.hp;bindHP()}{const fv=fl('fire');R.lamp+=[0,5,10,15,20][fv-1];R.lampMax+=[0,5,10,15,20][fv-1];if(fv>=3){G.bag.herb=(G.bag.herb||0)+1}if(fv>=5){R.ward={v:.7,n:1}}}snapRun();useTheme(R.theme);genFloor();G.screen='map';rlog(`B${f} ${THEMES[R.theme].n}に降り立った`);render();tip('move')}
 function rlog(t){R.log.push(t);if(R.log.length>3)R.log.shift()}
 function carve(t,r){for(let y=r.y;y<r.y+r.h;y++)for(let x=r.x;x<r.x+r.w;x++)t[y][x]='.'}
 function genFloor(){
@@ -455,7 +500,7 @@ function drawMap(now){
  const draw=[...ents.map(e=>({e,y:e.dy})),{me:1,y:R.dy}].sort((a,b)=>a.y-b.y);
  const bob=t=>Math.round(Math.sin(now/220+t)*1);
  for(const d of draw){
-  if(d.me){const[sx,sy]=S(R.dx,R.dy);const m=cur(),k=SP[m.sp].spr,sp=sprC(k,R.face<0);shadow(x,sx+8,sy+14,6);x.drawImage(sp,sx+8-(sp.width>>1),sy+14-sp.height+bob(0));continue}
+  if(d.me){const[sx,sy]=S(R.dx,R.dy);const m=cur(),k=monSpr(m),sp=sprC(k,R.face<0);shadow(x,sx+8,sy+14,6);x.drawImage(sp,sx+8-(sp.width>>1),sy+14-sp.height+bob(0));continue}
   const e=d.e,[sx,sy]=S(e.dx,e.dy);
   if(e.type==='item'){const im=e.k==='book'?TEX.books[e.col]:e.k==='key'?TEX.key:e.k==='val'?TEX.item[VAL[e.vn][1]]:TEX.item[e.k];if(!im)continue;shadow(x,sx+8,sy+13,4);x.drawImage(im,sx+2,sy+1+(e.k==='lamp'||e.k==='lantern'||e.k==='key'||e.k==='shard'?bob(e.x):0));continue}
   if(e.type==='chest'){shadow(x,sx+8,sy+13,5);x.drawImage(e.opened?TEX.chestO:TEX.chest,sx+2,sy+2);continue}
@@ -463,6 +508,7 @@ function drawMap(now){
   if(e.type==='brazier'){x.drawImage(e.lit?TEX.brazLit[(fr+e.x)%3]:TEX.braz,sx,sy);continue}
   if(e.type==='merchant'){shadow(x,sx+8,sy+14,6);x.drawImage(TEX.merchant,sx+2,sy+2+bob(2));continue}
   if(e.type==='statue'){x.drawImage(e.used?TEX.statueUsed:TEX.statue,sx,sy-8);continue}
+  if(e.type==='cage'){if(!TEX.cage)TEX.cage=drawSpr('cage',1);x.globalAlpha=.6+.4*Math.sin(now/300);x.drawImage(TEX.item.wisp,sx+2,sy+1);x.globalAlpha=1;shadow(x,sx+8,sy+14,6);x.drawImage(TEX.cage,sx+2,sy+2);continue}
   if(e.type==='stray'){x.globalAlpha=.85+.15*Math.sin(now/200);x.drawImage(TEX.item.wisp,sx+2,sy-1+Math.round(Math.sin(now/300)*2));x.globalAlpha=1;continue}
   const F=FOES[e.k],sp=sprC(F.spr,e.x>R.px);
   if(F.boss){shadow(x,sx+8,sy+15,11);x.drawImage(sp,0,0,sp.width,sp.height,sx+8-sp.width,sy+15-sp.height*2+bob(1),sp.width*2,sp.height*2)}
@@ -486,11 +532,11 @@ function drawMap(now){
 }
 function shadow(x,cx,cy,w){x.fillStyle='rgba(0,0,0,.45)';x.fillRect(cx-w,cy,w*2,2);x.fillRect(cx-w+2,cy-1,w*2-4,1)}
 function drawMini(){const c=$('#mini');if(!c)return;const x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);if((ANOM[R.anom]||{}).fog){x.fillStyle='#5F5E5A';x.font='10px monospace';x.fillText('霧',24,34);return}for(let y=0;y<MH;y++)for(let X=0;X<MW;X++){if(!R.seen[y][X])continue;const t=R.map[y][X];x.fillStyle=t==='#'||t==='P'||t==='X'?'#2C2C2A':t==='>'?'#5DCAA5':t==='D'?'#854F0B':'#5F5E5A';x.fillRect(X*2,y*2,2,2)}R.ents.forEach(e=>{if(!R.seen[e.y][e.x]&&e.k!=='カゲクイ')return;const col=e.k==='カゲクイ'?'#E24B4A':e.type==='merchant'?'#AFA9EC':e.type==='statue'?'#B4B2A9':e.type==='stray'?'#FAC775':e.type==='chest'&&!e.opened?'#EF9F27':e.type==='fountain'&&!e.used?'#378ADD':e.type==='brazier'?(e.lit?'#D85A30':'#888780'):null;if(col){x.fillStyle=col;x.fillRect(e.x*2,e.y*2,2,2)}});x.fillStyle='#EF9F27';x.fillRect(R.px*2-1,R.py*2-1,3,3)}
-function hudHTML(){const m=cur(),mx=stats(m.parts,SP[m.sp].m).hp;return `<div class="row s"><span style="width:24px">灯</span><span class="bar"><i style="width:${R.lamp/R.lampMax*100}%;background:#EF9F27"></i></span><span style="width:44px;text-align:right">${R.lamp}</span></div><div class="row s"><span style="width:24px">HP</span><span class="bar"><i style="width:${R.hp/mx*100}%"></i></span><span style="width:44px;text-align:right">${R.hp}</span></div><div class="row s"><span>飢え ${R.hunger}%　<span class="y">灯片${G.bag.shards}</span>${R.chain?`　<span class="t">連灯×${chainMul().toFixed(1)}</span>`:''}${R.keys?'　<span class="y">鍵'+R.keys+'</span>':''}</span><span class="m">${m.sp} ランク${rank(m.parts)}</span></div>${R.party&&R.party.length>1?`<div class="row s" style="justify-content:flex-start;gap:4px;flex-wrap:nowrap;overflow:hidden">${R.party.map(id=>{const mm=monById(id),hp=R.hps[id],mx=maxHp(mm);return `<span onclick="setLead(${id})" style="white-space:nowrap;font-size:11px;line-height:1.6;border:1px solid ${id===R.lead?'#EF9F27':'#444441'};padding:0 3px;cursor:pointer;color:${hp>0?(id===R.lead?'#EF9F27':'#B4B2A9'):'#E24B4A'}">${mm.sp} ${hp>0?Math.round(hp/mx*100)+'%':'×'}</span>`}).join('')}</div>`:''}`}
+function hudHTML(){const m=cur(),mx=mstats(m).hp;return `<div class="row s"><span style="width:24px">灯</span><span class="bar"><i style="width:${R.lamp/R.lampMax*100}%;background:#EF9F27"></i></span><span style="width:44px;text-align:right">${R.lamp}</span></div><div class="row s"><span style="width:24px">HP</span><span class="bar"><i style="width:${R.hp/mx*100}%"></i></span><span style="width:44px;text-align:right">${R.hp}</span></div><div class="row s"><span>飢え ${R.hunger}%　<span class="y">灯片${G.bag.shards}</span>${R.chain?`　<span class="t">連灯×${chainMul().toFixed(1)}</span>`:''}${R.keys?'　<span class="y">鍵'+R.keys+'</span>':''}</span><span class="m">${m.sp} ランク${rank(m.parts)}</span></div>${R.party&&R.party.length>1?`<div class="row s" style="justify-content:flex-start;gap:4px;flex-wrap:nowrap;overflow:hidden">${R.party.map(id=>{const mm=monById(id),hp=R.hps[id],mx=maxHp(mm);return `<span onclick="setLead(${id})" style="white-space:nowrap;font-size:11px;line-height:1.6;border:1px solid ${id===R.lead?'#EF9F27':'#444441'};padding:0 3px;cursor:pointer;color:${hp>0?(id===R.lead?'#EF9F27':'#B4B2A9'):'#E24B4A'}">${mm.sp} ${hp>0?Math.round(hp/mx*100)+'%':'×'}</span>`}).join('')}</div>`:''}`}
 function refreshMap(){if(G.screen!=='map')return;if(R&&R.steps%4===0)saveRun();const h=$('#hud');if(h)h.innerHTML=hudHTML();const l=$('#mlog');if(l)l.innerHTML=R.log.map(t=>'&gt; '+t).join('<br>');drawMini()}
 function fitBox(wrapSel,cvSel,ratio){const w=$(wrapSel),c=$(cvSel);if(!w||!c)return;const W=w.clientWidth,H=w.clientHeight;let cw=Math.min(W,H*ratio);c.style.width=Math.floor(cw)+'px';c.style.height=Math.floor(cw/ratio)+'px'}
 let HOLD=null,HT=null;
-function holdStart(d){HOLD=d;stepHold();clearInterval(HT);HT=setInterval(stepHold,170)}
+function holdStart(d){HOLD=d;stepHold();clearInterval(HT);HT=setInterval(stepHold,walkMs(170))}
 function stepHold(){if(!HOLD||G.screen!=='map'||UI.modal){holdEnd();return}move(HOLD[0],HOLD[1])}
 function holdEnd(){HOLD=null;clearInterval(HT)}
 document.addEventListener('pointerup',holdEnd);document.addEventListener('pointercancel',holdEnd);
@@ -499,7 +545,7 @@ function rMap(){
  app.appendChild(el(`<div class="row"><div style="flex:1"><div class="row"><span class="y">B${R.floor} ${THEMES[R.theme].n}</span><span class="s ${R.bossFloor?'r':R.anom?'p':'m'}">${R.bossFloor?'ボスの気配':R.anom?'【'+R.anom+'】':'ボス B'+(Math.ceil(R.floor/5)*5)}</span></div><div id="hud">${hudHTML()}</div></div><canvas id="mini" width="60" height="60" style="width:60px;height:60px;border:1px solid #444441;margin-left:8px;image-rendering:pixelated"></canvas></div>`));
  const wrap=el('<canvas id="view" width="720" height="720" style="border:1px solid #2C2C2A;touch-action:none"></canvas>');wrap.id='vwrap';app.appendChild(wrap);
  app.appendChild(el(`<div id="mlog" class="bx s" style="height:58px;overflow:hidden;color:#B4B2A9;padding:4px 8px">${R.log.map(t=>'&gt; '+t).join('<br>')}</div>`));
- const ctr=el('');ctr.className='ctrl';const pad=document.createElement('div');pad.className='pad';
+ const ctr=el('');ctr.className='ctrl'+(cfg().left?' lh':'');const pad=document.createElement('div');pad.className='pad';
  [['',0],['▲',[0,-1]],['',0],['◀',[-1,0]],['・',[0,0]],['▶',[1,0]],['',0],['▼',[0,1]],['',0]].forEach(([l,d])=>{if(!l){pad.appendChild(document.createElement('div'));return}const b=document.createElement('button');b.textContent=l;b.onpointerdown=ev=>{ev.preventDefault();stopAuto();if(d[0]||d[1])holdStart(d);else move(0,0)};pad.appendChild(b)});
  ctr.appendChild(pad);const side=document.createElement('div');side.className='side';side.appendChild(btn('自動探索',()=>{if(AUTO){stopAuto('自動探索をやめた');return}startAuto('explore')}));side.appendChild(btn('階段へ',goStairs));side.appendChild(btn('持ち物',()=>{stopAuto();bagMenu()}));side.appendChild(btn('調べる',()=>{stopAuto();search()}));side.appendChild(btn('帰還',()=>modal('野営地に帰還しますか？','今回上がった部位Lvはそのまま持ち帰れます。',[['帰還する',()=>endRun('return')],['やめる',null]])));ctr.appendChild(side);app.appendChild(ctr);
  fitBox('#vwrap','#view',1);drawMini();
@@ -515,16 +561,17 @@ function move(dx,dy){
  const nx=R.px+dx,ny=R.py+dy;const tc=R.map[ny]&&R.map[ny][nx];if((dx||dy)&&solid(nx,ny)&&tc!=='X'&&tc!=='D')return;
  const e=(dx||dy)?R.ents.find(e=>e.x===nx&&e.y===ny):null;
  if(e&&e.type==='foe'){holdEnd();startBattle(e);return}
- if((dx||dy)&&R.map[ny][nx]==='X'){holdEnd();R.map[ny][nx]='.';sfx('door');stat('secret');rlog('<span class="y">ひびの入った壁を崩した！隠し部屋だ</span>');computeVis();refreshMap();return}
+ if((dx||dy)&&R.map[ny][nx]==='X'){holdEnd();R.map[ny][nx]='.';sfx('door');stat('secret');rlog('<span class="y">ひびの入った壁を崩した！隠し部屋だ</span>');tip('secret');computeVis();refreshMap();return}
  if((dx||dy)&&R.map[ny][nx]==='D'){holdEnd();if(R.keys>0||itCnt('wire')){if(R.keys>0){R.keys--;rlog('<span class="y">鍵で扉を開けた！宝物庫だ</span>')}else{const br=Math.random()<.3;if(br)G.bag.wire--;rlog(`<span class="y">針金で扉をこじ開けた！宝物庫だ</span>${br?'（針金が折れた）':''}`)}R.map[ny][nx]='.';sfx('door');stat('vault');computeVis()}else rlog('鍵がかかっている。どこかに鍵があるはずだ');refreshMap();return}
  if((dx||dy)&&R.map[ny][nx]!=='D'&&solid(nx,ny))return;
  if(e&&(e.type==='chest'||e.type==='fountain'||e.type==='brazier')){holdEnd();interact(e);return}
  if(e&&e.type==='merchant'){shop(e);return}
  if(e&&e.type==='statue'){pray(e);return}
+ if(e&&e.type==='cage'){holdEnd();cage(e);return}
  if(e&&e.type==='stray'){holdEnd();modal('はぐれ灯',`さまよう${e.k}の灯がいる。<br>灯を15分ければ仲間になりそうだ。`,[[`灯を15分ける（残り${R.lamp}）`,()=>{if(R.lamp<=15){rlog('灯が足りない');return}R.lamp-=15;G.mons.push(mkMon(e.k));R.got.mons.push(e.k);R.ents=R.ents.filter(x=>x!==e);rlog(`${e.k}が仲間になった（野営地で交代できる）`);computeVis()}],['立ち去る',null]]);return}
  R.px=nx;R.py=ny;R.steps++;sfx('step');if(R.repel>0){R.repel--;if(!R.repel)rlog('魔除けの香が消えた')}
- if(e&&e.type==='item'){R.ents=R.ents.filter(x=>x!==e);const b=G.bag;sfx(e.k==='shard'||e.k==='val'?'coin':'pickup');if(e.k==='val'){addVal(e.vn);rlog(`<span class="y">${e.vn}</span>を拾った（野営地で換金できる）`)}else if(e.k!=='shard')if(e.k!=='herb'&&e.k!=='meat')got({book:'未鑑定の書',lamp:'灯のしずく',lantern:'灯籠',key:'鍵'}[e.k]);if(e.k==='book'){b.books.push(e.col);rlog(`未鑑定の書（${e.col}）を拾った`)}if(e.k==='herb'||e.k==='meat'){const id=tierPick(e.k==='herb'?'heal':'food');b[id]=(b[id]||0)+1;got(IT[id].n);rlog(`<span class="g">${IT[id].n}</span>を拾った`)}if(e.k==='lamp'){R.lamp=Math.min(R.lampMax,R.lamp+15);rlog('<span class="y">灯のしずく</span>：灯が15回復')}if(e.k==='lantern'){b.lantern++;rlog('<span class="y">灯籠</span>を見つけた！')}if(e.k==='shard'){const n=e.n*((ANOM[R.anom]||{}).shards||1);b.shards+=n;got('灯片',n);rlog(`<span class="y">灯片</span>を${n}拾った`)}if(e.k==='key'){R.keys++;rlog('<span class="y">古びた鍵</span>を拾った。どこかの扉が開けられる')}}
- if(R.steps%2===0&&R.hunger>0){for(const id of R.party){const mm=monById(id);if(mm&&R.hps[id]>0){const mx=maxHp(mm);R.hps[id]=Math.min(mx,R.hps[id]+Math.max(1,Math.round(mx*.03)))}}}
+ if(e&&e.type==='item'){tip('item');R.ents=R.ents.filter(x=>x!==e);const b=G.bag;sfx(e.k==='shard'||e.k==='val'?'coin':'pickup');if(e.k==='val'){addVal(e.vn);rlog(`<span class="y">${e.vn}</span>を拾った（野営地で換金できる）`)}else if(e.k!=='shard')if(e.k!=='herb'&&e.k!=='meat')got({book:'未鑑定の書',lamp:'灯のしずく',lantern:'灯籠',key:'鍵'}[e.k]);if(e.k==='book'){b.books.push(e.col);rlog(`未鑑定の書（${e.col}）を拾った`)}if(e.k==='herb'||e.k==='meat'){const id=tierPick(e.k==='herb'?'heal':'food');b[id]=(b[id]||0)+1;got(IT[id].n);rlog(`<span class="g">${IT[id].n}</span>を拾った`)}if(e.k==='lamp'){R.lamp=Math.min(R.lampMax,R.lamp+15);rlog('<span class="y">灯のしずく</span>：灯が15回復')}if(e.k==='lantern'){b.lantern++;rlog('<span class="y">灯籠</span>を見つけた！')}if(e.k==='shard'){const n=e.n*((ANOM[R.anom]||{}).shards||1);b.shards+=n;got('灯片',n);rlog(`<span class="y">灯片</span>を${n}拾った`)}if(e.k==='key'){R.keys++;rlog('<span class="y">古びた鍵</span>を拾った。どこかの扉が開けられる')}}
+ if(R.steps%2===0&&R.hunger>0){for(const id of R.party){const mm=monById(id);if(mm&&R.hps[id]>0){const mx=maxHp(mm);R.hps[id]=Math.min(mx,R.hps[id]+Math.max(1,Math.round(mx*.03*((mm.pass||[]).includes('PAS-018')?2:1))))}}}
  shadowTick();
  for(const ev of R.events){if(!ev.told&&R.px>=ev.r.x&&R.px<ev.r.x+ev.r.w&&R.py>=ev.r.y&&R.py<ev.r.y+ev.r.h){ev.told=true;rlog(EVMSG[ev.type])}}
  const tp=R.traps[nx+','+ny];if(tp&&(dx||dy)){if(trap(tp))return}
@@ -538,24 +585,24 @@ function move(dx,dy){
   if(chasing&&!kage){f.chase=(f.chase||0)+1;if(f.chase>12&&d>=3){f.cool=25;f.chase=0;f.aggro=false;if(R.vis[f.x+','+f.y])rlog(`${f.k}は追うのをあきらめた`);continue}}
   if(!chasing&&d>5)f.chase=Math.max(0,(f.chase||0)-1);
   if(chasing){const sx=Math.sign(R.px-f.x),sy=Math.sign(R.py-f.y);const opts=[[sx,0],[0,sy]].filter(([a,b])=>a||b);for(const[a,b]of opts.sort(()=>Math.random()-.5)){const tx=f.x+a,ty=f.y+b;if(tx===R.px&&ty===R.py){holdEnd();startBattle(f,true);return}if(!solid(tx,ty)&&R.map[ty][tx]!=='>'&&!R.ents.some(o=>o.x===tx&&o.y===ty)){f.x=tx;f.y=ty;break}}}}
- computeVis();refreshMap();
+ computeVis();refreshMap();tutSee();
 }
-function descend(){stopAuto();sfx('stairs');R.lamp-=6;if(R.lamp<=0){R.lamp=0;modal('灯が尽きた','階段を降りる灯が残っていない。<br>野営地へ引き戻された（今回の成長は持ち帰れた）。',[['野営地へ',()=>endRun('lamp')]]);return}R.floor++;const rec=R.floor>G.best&&R.floor<=10;G.best=Math.max(G.best,Math.min(10,R.floor));R.chain++;statMax('maxchain',R.chain);if(R.floor>10){modal('体験版クリア','B10を突破した！<br>B11「しずく洞」以降は次のプロトタイプで。',[['結果を見る',()=>endRun('clear')]]);return}genFloor();rlog(`B${R.floor}へ降りた`);if(R.anom)rlog(`<span class="p">【${R.anom}】${ANOM[R.anom].d}</span>`);if(rec){const n=2*R.floor;G.bag.shards+=n;got('灯片',n);setTimeout(()=>sfx('fanfare'),400);rlog(`<span class="y">最深記録更新！灯片+${n}</span>`)}render();if(!R.bossFloor)boon()}
+function descend(){stopAuto();sfx('stairs');R.lamp-=6;if(R.lamp<=0){R.lamp=0;modal('灯が尽きた','階段を降りる灯が残っていない。<br>野営地へ引き戻された（今回の成長は持ち帰れた）。',[['野営地へ',()=>endRun('lamp')]]);return}R.floor++;const rec=R.floor>G.best&&R.floor<=10;G.best=Math.max(G.best,Math.min(10,R.floor));R.chain++;statMax('maxchain',R.chain);if(R.floor>10){stat('clear');ending(0,()=>endRun('clear'));return}genFloor();rlog(`B${R.floor}へ降りた`);if(R.anom)rlog(`<span class="p">【${R.anom}】${ANOM[R.anom].d}</span>`);if(rec){const n=2*R.floor;G.bag.shards+=n;got('灯片',n);setTimeout(()=>sfx('fanfare'),400);rlog(`<span class="y">最深記録更新！灯片+${n}</span>`)}render();if(!R.bossFloor)boon();tip('lamp');if(R.floor>=3)tip('ret');if(R.anom)tip('anom');if(!R.bossFloor)tip('boon');tutSee()}
 function bagMenu(){holdEnd();const b=G.bag;const bs=Object.keys(IT).filter(k=>itCnt(k)&&['heal','food','ward','explore'].includes(IT[k].c)).map(k=>[`${IT[k].n}（${itCnt(k)}）<span class="s m">　${IT[k].d}</span>`,()=>useMapItem(k)]);if(b.books.length)bs.push([`書を見る（${b.books.length}）`,()=>{setTimeout(bookMenu,0)}]);bs.push(['とじる',null]);modal('持ち物',`${Object.keys(IT).filter(k=>itCnt(k)&&['smoke','battle','tool','grow'].includes(IT[k].c)).map(k=>IT[k].n+itCnt(k)).join('　')}${b.lantern?'　灯籠'+b.lantern:''}　灯片 ${b.shards}${R.ward?'<br><span class="b">護符が効いている</span>':''}${R.repel>0?'<br><span class="p">魔除け 残り'+R.repel+'歩</span>':''}`,bs)}
-function endRun(why){stopAuto();if(why==='lose')stat('death');{const rate=[0,.02,.03,.04,.05][fl('bank')-1];const it=why!=='lose'?Math.min(Math.floor(G.bank*rate),60*fl('bank')):0;if(it){G.bank+=it}const ex=expeTick();UI.campMsg=[it?`金庫の利息：灯片+${it}`:'',ex].filter(Boolean).join('<br>')||null}const m=cur(),g=R.got;let lost='',shLost=0,valLost=0;
+function endRun(why){stopAuto();UI.mur=null;if(why==='lose')stat('death');{const rate=[0,.02,.03,.04,.05][fl('bank')-1];const it=why!=='lose'?Math.min(Math.floor(G.bank*rate),60*fl('bank')):0;if(it){G.bank+=it}const ex=expeTick();UI.campMsg=[it?`金庫の利息：灯片+${it}`:'',ex].filter(Boolean).join('<br>')||null}const m=cur(),g=R.got;let lost='',shLost=0,valLost=0;
  if(why==='lose'){const l=[];for(const id in(R.gby||{})){const mm=monById(+id);if(!mm)continue;PARTS.forEach(k=>{const x=Math.floor((R.gby[id][k]||0)/2);if(x){mm.parts[k]=Math.max(1,mm.parts[k]-x);l.push(`${mm.sp}の${PN[k]}-${x}`)}})}lost=l.join('、');const lf=fl('bank')>=5?.25:fl('bank')>=4?.34:.5;shLost=Math.floor(G.bag.shards*lf);G.bag.shards-=shLost;for(const k in G.bag.val){const x=Math.floor(G.bag.val[k]*lf);G.bag.val[k]-=x;valLost+=x}}
  UI.sum={title:why==='lose'?'全滅…':why==='lamp'?'灯が尽きた':why==='clear'?'体験版クリア！':'帰還した',sub:why==='lose'?'野営地へ運ばれた':why==='lamp'?'今回の成長は持ち帰れた':'無事に野営地へ戻った',floor:R.floor,wins:g.wins,eat:g.eat,seal:g.seal,start:g.start,after:{...m.parts},mems:(R.party||[]).map(id=>{const mm=monById(id);return mm?{sp:mm.sp,start:(g.starts||{})[id]||{...mm.parts},after:{...mm.parts}}:null}).filter(Boolean),lost,items:g.items,skills:g.skills,mons:g.mons,sh0:g.shards,sh1:G.bag.shards,shLost,valLost};
  R=null;B=null;G.screen='summary';render()}
 
 
-function loot(rich){const b=G.bag,g=[];const n=rich===2?3:rich===1?2:1;for(let i=0;i<n;i++){const r=Math.random();if(r<.27){const c=pick(BOOKCOL);b.books.push(c);got('未鑑定の書');g.push(`未鑑定の書（${c}）`)}else if(r<.45){const id=tierPick(Math.random()<.7?'heal':'smoke');itGive(id);g.push(IT[id].n)}else if(r<.55){const id=tierPick(Math.random()<.6?'food':'ward');itGive(id);g.push(IT[id].n)}else if(r<.68){R.lamp=Math.min(R.lampMax,R.lamp+15);got('灯のしずく');g.push('灯のしずく（灯+15）')}else if(r<.8){const k=3+rnd(4)+Math.floor(R.floor/2);b.shards+=k;got('灯片',k);g.push(`灯片×${k}`)}else if(r<.9){const v=rollVal();addVal(v);g.push(`<span class="y">${v}</span>`)}else{b.lantern++;got('灯籠');g.push('<span class="y">灯籠</span>')}}if(rich===2&&Math.random()<.5){b.lantern++;got('灯籠');g.push('<span class="y">灯籠</span>')}if(rich===2&&Math.random()<.12){const id=Math.random()<.5?'hiyaku':'kessho';itGive(id);g.push(`<span class="p">${IT[id].n}</span>`)}if(Math.random()<.18){const id=tierPick(Math.random()<.5?'battle':'explore');itGive(id);g.push(IT[id].n)}return g.join('、')}
+function loot(rich){const b=G.bag,g=[];const n=rich===2?3:rich===1?2:1;for(let i=0;i<n;i++){const r=Math.random();if(r<.27){const c=pick(BOOKCOL);b.books.push(c);got('未鑑定の書');g.push(`未鑑定の書（${c}）`)}else if(r<.45){const id=tierPick(Math.random()<.7?'heal':'smoke');itGive(id);g.push(IT[id].n)}else if(r<.55){const id=tierPick(Math.random()<.6?'food':'ward');itGive(id);g.push(IT[id].n)}else if(r<.68){R.lamp=Math.min(R.lampMax,R.lamp+15);got('灯のしずく');g.push('灯のしずく（灯+15）')}else if(r<.8){const k=3+rnd(4)+Math.floor(R.floor/2);b.shards+=k;got('灯片',k);g.push(`灯片×${k}`)}else if(r<.9){const v=rollVal();addVal(v);g.push(`<span class="y">${v}</span>`)}else{b.lantern++;got('灯籠');g.push('<span class="y">灯籠</span>')}}if(rich===2&&Math.random()<.3){const pb={c:'金',id:pick(pasPool())};b.books.push(pb);got('心得の書');g.push(`<span class="p">心得の書（${SK[pb.id][0]}）</span>`)}if(rich===2&&Math.random()<.5){b.lantern++;got('灯籠');g.push('<span class="y">灯籠</span>')}if(rich===2&&Math.random()<.12){const id=Math.random()<.5?'hiyaku':'kessho';itGive(id);g.push(`<span class="p">${IT[id].n}</span>`)}if(Math.random()<.18){const id=tierPick(Math.random()<.5?'battle':'explore');itGive(id);g.push(IT[id].n)}return g.join('、')}
 function interact(e){
  if(e.type==='chest'){if(e.opened){rlog('空の宝箱だ');refreshMap();return}
   if(e.mimic){e.mimic=false;sfx('mimic');rlog('<span class="r">宝箱が牙をむいた！</span>');const f={x:e.x,y:e.y,type:'foe',k:'ミミック',chest:e};R.ents.push(f);startBattle(f,true);return}
   e.opened=true;sfx('chest');stat('chest');const g=loot(e.rich||0);modal(e.rich===2?'宝物庫の宝箱':'宝箱を開けた',g+'を手に入れた！',[['よし',null]]);computeVis();refreshMap();return}
  if(e.type==='fountain'){if(e.used){rlog('泉は枯れている');refreshMap();return}modal('癒しの泉','澄んだ水が湧いている。飲みますか？<br><span class="m s">HP全回復・状態異常回復（1回きり）</span>',[['飲む',()=>{e.used=true;sfx('drink');healAll();rlog('<span class="b">泉の水でHPが全回復した</span>')}],['やめる',null]]);return}
  if(e.type==='brazier'){if(e.lit){rlog('篝火が燃えている');refreshMap();return}e.lit=true;sfx('brazier');R.lamp=Math.min(R.lampMax,R.lamp+20);R.torches.push([e.x,e.y,1]);for(let y=e.y-4;y<=e.y+4;y++)for(let x=e.x-4;x<=e.x+4;x++)if(R.seen[y]&&R.seen[y][x]!==undefined&&Math.hypot(x-e.x,y-e.y)<=4.5)R.seen[y][x]=1;rlog('<span class="y">篝火に灯を移した。灯が20回復し、周囲が照らされた</span>');computeVis();refreshMap()}}
-function trap(tp){sfx('trap');tp.found=true;holdEnd();const m=cur(),mx=stats(m.parts,SP[m.sp].m).hp;
+function trap(tp){sfx('trap');tp.found=true;holdEnd();const m=cur(),mx=mstats(m).hp;
  if(tp.k==='dart'){const d=Math.round(mx*.12);R.hp=Math.max(1,R.hp-d);rlog(`<span class="r">毒矢の罠！${d}のダメージ</span>`)}
  if(tp.k==='alarm'){rlog('<span class="r">警報の罠！魔物が集まってくる</span>');R.ents.forEach(f=>{if(f.type==='foe')f.aggro=true});for(let i=0;i<2;i++){for(let k=0;k<30;k++){const x=R.px+rnd(9)-4,y=R.py+rnd(9)-4;if(!solid(x,y)&&Math.abs(x-R.px)+Math.abs(y-R.py)>2&&!R.ents.some(e=>e.x===x&&e.y===y)){R.ents.push({x,y,dx:x,dy:y,type:'foe',k:pick(['コケネズミ','ススコウモリ','イシムシ','ドロカビ']),aggro:true});break}}}}
  if(tp.k==='pit'){const d=Math.round(mx*.1);R.hp=Math.max(1,R.hp-d);modal('落とし穴！',`下の階へ落ちた。${d}のダメージ`,[['いてて…',()=>{R.lamp+=6;descend()}]]);computeVis();refreshMap();return true}
@@ -578,23 +625,24 @@ function mkStock(){const pool=[['lamp','灯のしずく（灯+15）',30],['book'
 function shop(e){holdEnd();const b=G.bag;const bs=e.stock.filter(s=>s.q>0).map(s=>[`${s.n}　<span class="y">${s.pr}</span> 灯片${s.q>1?'（×'+s.q+'）':''}`,()=>{if(b.shards<s.pr){rlog('<span class="m">灯片が足りない</span>');setTimeout(()=>shop(e),0);return}b.shards-=s.pr;s.q--;
   if(IT[s.k])b[s.k]=(b[s.k]||0)+1;if(s.k==='oil'){R.lampMax+=15;R.lamp+=15}if(s.k==='lamp')R.lamp=Math.min(R.lampMax,R.lamp+15);if(s.k==='book')b.books.push(pick(BOOKCOL));if(s.k==='lantern')b.lantern++;if(s.k==='key')R.keys++;if(s.k==='map'){for(let y=0;y<MH;y++)for(let x=0;x<MW;x++){if(R.map[y][x]!=='#')R.seen[y][x]=1;else if([[0,1],[1,0],[0,-1],[-1,0]].some(([a,c])=>R.map[y+c]&&R.map[y+c][x+a]&&R.map[y+c][x+a]!=='#'))R.seen[y][x]=1}}
   rlog(`${s.n}を買った`);stat('buy');setTimeout(()=>shop(e),0)}]);
- bs.push(['立ち去る',null]);modal('灯の行商人',`「…灯片と交換だよ」<br><span class="s m">所持 灯片 <span class="y">${b.shards}</span></span>`,bs)}
+ bs.push(['立ち去る',null]);e.greet=e.greet||pick(MERL);tip('merchant');modal('灯の行商人',`${e.greet}<br><span class="s m">所持 灯片 <span class="y">${b.shards}</span></span>`,bs)}
 function mkEvent(r,free,ty){const cx=r.x+(r.w>>1),cy=r.y+(r.h>>1);const type=ty||pick(['hoard','den','statue']);R.events.push({r,type,told:false});
  const at=(x,y)=>!R.ents.some(e=>e.x===x&&e.y===y)&&R.map[y][x]==='.';
  if(type==='hoard'){[[cx-1,cy],[cx+1,cy],[cx,cy-1]].forEach(([x,y],i)=>{if(at(x,y))R.ents.push({x,y,type:'chest',rich:i===2?2:1,mimic:i===0&&Math.random()<.3})});for(let i=0;i<3;i++){const p=free(r);if(p)R.ents.push({x:p[0],y:p[1],type:'item',k:'shard',n:3+rnd(4)})}for(let i=0;i<1;i++){const p=free(r);if(p)R.ents.push({x:p[0],y:p[1],type:'item',k:'val',vn:rollVal()})}for(let i=0;i<2;i++){const p=free(r);if(p)R.ents.push({x:p[0],y:p[1],type:'foe',k:pick(['イシムシ','ドロカビ'])})}}
  if(type==='den'){if(at(cx,cy))R.ents.push({x:cx,y:cy,type:'chest',rich:2});for(let i=0;i<5;i++){const p=free(r);if(p)R.ents.push({x:p[0],y:p[1],type:'foe',k:pick(['コケネズミ','コケネズミ','ススコウモリ','イシムシ','ドロカビ'])})}for(let i=0;i<6;i++){const p=free(r);if(p)R.deco[p[0]+','+p[1]]=pick(['bones','skull'])}}
+ if(type==='cage'){if(at(cx,cy))R.ents.push({x:cx,y:cy,type:'cage',sp:cageSp()});for(let i=0;i<2+(R.floor>5?1:0);i++){const p=free(r);if(p)R.ents.push({x:p[0],y:p[1],type:'foe',k:pick(['コケネズミ','ススコウモリ','イシムシ','ドロカビ']),guard:1})}for(let i=0;i<2;i++){const p=free(r);if(p&&!(p[0]===cx&&p[1]===cy)&&!R.ents.some(o=>o.x===p[0]&&o.y===p[1]))R.traps[p[0]+','+p[1]]={k:pick(['dart','alarm']),found:false}}}
  if(type==='statue'){if(at(cx,cy))R.ents.push({x:cx,y:cy,type:'statue'});[[cx-1,cy+1],[cx+1,cy+1]].forEach(([x,y])=>{if(at(x,y)){R.ents.push({x,y,type:'brazier',lit:true});R.torches.push([x,y,1])}})}}
-const EVMSG={hoard:'<span class="y">宝の匂いがする…宝の山の部屋だ！</span>',den:'<span class="r">獣の臭いが充満している…魔物の巣だ！</span>',statue:'<span class="p">苔むした石像がこちらを見ている…</span>'};
-function pray(e){holdEnd();if(e.used){rlog('石像は沈黙している');refreshMap();return}modal('苔むした石像','灯片を15捧げて祈りますか？<br><span class="s m">何が起きるかは分からない</span>',[['祈る（灯片15）',()=>{if(G.bag.shards<15){rlog('<span class="m">灯片が足りない</span>');return}G.bag.shards-=15;e.used=true;stat('pray');const r=Math.random(),m=cur(),mx=stats(m.parts,SP[m.sp].m).hp;
+const EVMSG={hoard:'<span class="y">宝の匂いがする…宝の山の部屋だ！</span>',den:'<span class="r">獣の臭いが充満している…魔物の巣だ！</span>',statue:'<span class="p">苔むした石像がこちらを見ている…</span>',cage:'<span class="g">か細い鳴き声が聞こえる…囚われの灯だ！</span>'};
+function pray(e){holdEnd();tip('statue');if(e.used){rlog('石像は沈黙している');refreshMap();return}modal('苔むした石像','灯片を15捧げて祈りますか？<br><span class="s m">何が起きるかは分からない</span>',[['祈る（灯片15）',()=>{if(G.bag.shards<15){rlog('<span class="m">灯片が足りない</span>');return}G.bag.shards-=15;e.used=true;stat('pray');const r=Math.random(),m=cur(),mx=mstats(m).hp;
   if(r<.25){healAll();rlog('<span class="g">温かい光に包まれ、HPが全回復した</span>')}else if(r<.45){R.lamp=Math.min(R.lampMax,R.lamp+30);rlog('<span class="y">石像の目から灯が流れ込んだ（灯+30）</span>')}else if(r<.6){const c=pick(BOOKCOL);G.bag.books.push(c);rlog(`石像の足元に未鑑定の書（${c}）が現れた`)}else if(r<.8){R.bless=3;rlog('<span class="y">力が湧いてくる（次の3戦、攻撃↑）</span>')}else{R.curse=1;rlog('<span class="p">嫌な寒気がする…（次の戦闘、狂気が高い状態で始まる）</span>')}}],['立ち去る',null]])}
 function shadowTick(){if(R.bossFloor)return;R.fsteps++;
  const A=ANOM[R.anom]||{},w=A.kage?110:280,ap=A.kage?150:350;
  if(R.fsteps===60&&!R.vis[(stairsPos()||[0,0]).join(',')])rlog('<span class="t">灯が下り階段の方へ揺らめき始めた（画面の矢印）</span>');
  if(R.fsteps===w)rlog('<span class="p">背後で何かが蠢いた気がする…</span>');
- if(R.fsteps===ap&&!R.kage){let best=null,bd=0;for(let k=0;k<200;k++){const r=pick(R.rooms),x=r.x+rnd(r.w),y=r.y+rnd(r.h);if(solid(x,y)||R.ents.some(e=>e.x===x&&e.y===y))continue;const d=Math.abs(x-R.px)+Math.abs(y-R.py);if(d>bd){bd=d;best=[x,y]}}if(best){R.kage=1;R.ents.push({x:best[0],y:best[1],dx:best[0],dy:best[1],type:'foe',k:'カゲクイ',aggro:true});sfx('kage');rlog('<span class="r">影喰いが現れた！長居しすぎたようだ</span>')}}
+ if(R.fsteps===ap&&!R.kage){let best=null,bd=0;for(let k=0;k<200;k++){const r=pick(R.rooms),x=r.x+rnd(r.w),y=r.y+rnd(r.h);if(solid(x,y)||R.ents.some(e=>e.x===x&&e.y===y))continue;const d=Math.abs(x-R.px)+Math.abs(y-R.py);if(d>bd){bd=d;best=[x,y]}}if(best){R.kage=1;R.ents.push({x:best[0],y:best[1],dx:best[0],dy:best[1],type:'foe',k:'カゲクイ',aggro:true});sfx('kage');rlog('<span class="r">影喰いが現れた！長居しすぎたようだ</span>');tip('kage')}}
  if(R.kage&&R.fsteps%30===0&&R.ents.some(e=>e.k==='カゲクイ'))rlog('<span class="r">影喰いが近づいてくる…</span>')}
 
-const BLOCK={chest:1,brazier:1,fountain:1,merchant:1,statue:1};
+const BLOCK={chest:1,brazier:1,fountain:1,merchant:1,statue:1,cage:1};
 function reachCount(bl){const S=new Set(bl.map(e=>e.x+','+e.y));const seen=new Set([R.px+','+R.py]);const q=[[R.px,R.py]];while(q.length){const[x,y]=q.pop();for(const[a,b]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+a,Y=y+b,k=X+','+Y;const c=R.map[Y]&&R.map[Y][X];if(!c||c==='#'||c==='P'||seen.has(k)||S.has(k))continue;seen.add(k);q.push([X,Y])}}return seen.size}
 function roomOf(x,y){return(R.rooms||[]).find(r=>x>=r.x&&x<r.x+r.w&&y>=r.y&&y<r.y+r.h)}
 function okSpot(x,y,self){const r=roomOf(x,y);if(!r||R.map[y][x]!=='.')return false;if(x===R.px&&y===R.py)return false;
@@ -612,9 +660,9 @@ function stairsPos(){for(let y=0;y<MH;y++)for(let x=0;x<MW;x++)if(R.map[y][x]===
 function stairsDir(){const s=stairsPos();if(!s)return null;const dx=s[0]-R.px,dy=s[1]-R.py;if(Math.abs(dx)+Math.abs(dy)<2)return 'すぐそこ';const a=Math.atan2(dy,dx)*180/Math.PI;const n=['東','南東','南','南西','西','北西','北','北東'];return n[((Math.round(a/45)%8)+8)%8]}
 
 function chainMul(){return 1+.1*Math.min(10,R.chain||0)}
-function rollNext(){const r={anom:Math.random()<.35?pick(Object.keys(ANOM)):null,ev:Math.random()<.45?pick(['hoard','den','statue']):null,mer:Math.random()<.35};return r}
-function teaser(){if((R.floor+1)%5===0)return '<div class="r s" style="margin-top:6px">階下から強大な気配がする…（ボス）</div>';const n=R.next;if(!n)return '';const h=[];if(n.anom)h.push(`【${n.anom}】の気配`);if(n.ev)h.push({hoard:'宝の匂いがする',den:'獣の臭いがする',statue:'何かに見られている気がする'}[n.ev]);if(n.mer)h.push('行商人の鈴の音が聞こえる');if(R.chain)h.push(`<span class="t">連灯×${(1+.1*Math.min(10,R.chain+1)).toFixed(1)}になる（灯片の入手量アップ）</span>`);return h.length?`<div class="s p" style="margin-top:6px">${h.join('<br>')}</div>`:'<div class="s m" style="margin-top:6px">階下は静かだ…</div>'}
-function boon(){const m=cur(),mx=stats(m.parts,SP[m.sp].m).hp,b=G.bag;const pool=[
+function rollNext(){const r={anom:Math.random()<.35?pick(Object.keys(ANOM)):null,ev:Math.random()<.45?pick(R&&R.floor>=2?['hoard','den','statue','cage']:['hoard','den','statue']):null,mer:Math.random()<.35};return r}
+function teaser(){if((R.floor+1)%5===0)return '<div class="r s" style="margin-top:6px">階下から強大な気配がする…（ボス）</div>';const n=R.next;if(!n)return '';const h=[];if(n.anom)h.push(`【${n.anom}】の気配`);if(n.ev)h.push({hoard:'宝の匂いがする',den:'獣の臭いがする',statue:'何かに見られている気がする',cage:'か細い鳴き声が聞こえる'}[n.ev]);if(n.mer)h.push('行商人の鈴の音が聞こえる');if(R.chain)h.push(`<span class="t">連灯×${(1+.1*Math.min(10,R.chain+1)).toFixed(1)}になる（灯片の入手量アップ）</span>`);return h.length?`<div class="s p" style="margin-top:6px">${h.join('<br>')}</div>`:'<div class="s m" style="margin-top:6px">階下は静かだ…</div>'}
+function boon(){const m=cur(),mx=mstats(m).hp,b=G.bag;const pool=[
  ['灯が12回復する',()=>{R.lamp=Math.min(R.lampMax,R.lamp+12)}],['仲間全員のHPが全回復する',()=>healAll()],(()=>{const id=tierPick('heal');return[`${IT[id].n}を1つ`,()=>itGive(id)]})(),(()=>{const id=tierPick(Math.random()<.5?'smoke':'ward');return[`${IT[id].n}を1つ`,()=>itGive(id)]})(),
  [`灯片を${4+R.floor}`,()=>{const n=4+R.floor;b.shards+=n;got('灯片',n)}],['次の2戦、攻撃↑',()=>{R.bless=(R.bless||0)+2}],['この階の罠がすべて見える',()=>{for(const k in R.traps)R.traps[k].found=true}],['この階の宝箱の場所が分かる',()=>{R.ents.forEach(e=>{if(e.type==='chest')R.seen[e.y][e.x]=1})}],['この階の階段の場所が分かる',()=>{const s=stairsPos();if(s)R.seen[s[1]][s[0]]=1;R.compass=1}]];
  if(Math.random()<.25)pool.push(['換金アイテムを1つ',()=>{addVal(rollVal())}]);if(Math.random()<.15)pool.push(['未鑑定の書を1冊',()=>{b.books.push(pick(BOOKCOL));got('未鑑定の書')}]);
@@ -626,29 +674,29 @@ function bfsPath(tx,ty,goal){const K=(x,y)=>x+','+y,prev={},q=[[R.px,R.py]];prev
   for(const[a,b]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+a,Y=y+b,k=K(X,Y);if(k in prev)continue;if(!R.seen[Y]||!R.seen[Y][X])continue;const isT=goal?false:(X===tx&&Y===ty);if(solid(X,Y)&&!isT)continue;const e=R.ents.find(o=>o.x===X&&o.y===Y);if(e&&(BLOCK[e.type]||e.type==='foe'||e.type==='stray')&&!isT)continue;if(R.traps[k]&&R.traps[k].found&&!isT)continue;prev[k]=[x,y];q.push([X,Y])}}
  if(!end)return null;const p=[];let c=end;while(c&&!(c[0]===R.px&&c[1]===R.py)){p.unshift(c);c=prev[K(c[0],c[1])]}return p}
 function visFoes(){return R.ents.filter(e=>e.type==='foe'&&R.vis[e.x+','+e.y]&&Math.max(Math.abs(e.x-R.px),Math.abs(e.y-R.py))<=6)}
-function startAuto(mode,path){stopAuto();AUTO={mode,path:path||[],known:new Set(visFoes())};if(mode==='explore')rlog('<span class="t">自動探索中…（何かあれば止まる）</span>');AT=setInterval(autoTick,105);refreshMap()}
+function startAuto(mode,path){stopAuto();AUTO={mode,path:path||[],known:new Set(visFoes())};if(mode==='explore')rlog('<span class="t">自動探索中…（何かあれば止まる）</span>');AT=setInterval(autoTick,walkMs(105));refreshMap()}
 function exploreGoal(x,y){if(R.ents.some(e=>e.type==='item'&&e.x===x&&e.y===y))return true;if(solid(x,y))return false;for(const[a,b]of[[1,0],[-1,0],[0,1],[0,-1]]){const X=x+a,Y=y+b;if(R.seen[Y]&&R.seen[Y][X]===0)return true}return false}
 function autoTick(){if(!AUTO||!R||G.screen!=='map'||UI.modal){stopAuto();return}
  const nf=visFoes().filter(f=>!AUTO.known.has(f));if(nf.length){stopAuto(`<span class="r">${nf[0].k}の気配で立ち止まった</span>`);return}
- const m=cur(),mx=stats(m.parts,SP[m.sp].m).hp;if(R.hp<mx*.25&&AUTO.mode==='explore'){stopAuto('<span class="r">HPが少ないので立ち止まった</span>');return}
+ const m=cur(),mx=mstats(m).hp;if(R.hp<mx*.25&&AUTO.mode==='explore'){stopAuto('<span class="r">HPが少ないので立ち止まった</span>');return}
  if(!AUTO.path.length){if(AUTO.mode!=='explore'){stopAuto();return}const p=bfsPath(0,0,exploreGoal);if(!p){stopAuto(stairsPos()&&R.seen[stairsPos()[1]][stairsPos()[0]]?'この階は探索し尽くした。「階段へ」で進もう':'行ける場所は探索し尽くした');return}AUTO.path=p}
  const[nx,ny]=AUTO.path.shift();const ox=R.px,oy=R.py;move(nx-R.px,ny-R.py);if(AUTO&&R&&R.px===ox&&R.py===oy)stopAuto()}
 function goStairs(){stopAuto();const s=stairsPos();if(!s||!R.seen[s[1]][s[0]]){rlog('まだ階段を見つけていない（「調べる」で方角が分かる）');refreshMap();return}const p=bfsPath(s[0],s[1]);if(!p){rlog('階段への道が見つからない');refreshMap();return}startAuto('path',p)}
 /* ---------- battle ---------- */
 function foeParts(f,boss){const total=5+Math.round((f-1)*2.2)+(boss?3:0);const p={head:1,arm:1,body:1,leg:1,core:1};const F=boss;return p}
 function mkFoe(k){const F=FOES[k];const f=R.floor;let total=Math.round((f-1)*1.4)+rnd(2)+(F.boss?2:0)+(F.plus||0);const p={head:1,arm:1,body:1,leg:1,core:1};while(total-->0){const ks=[...PARTS,F.fav,F.fav];p[pick(ks)]++}const st=stats(p,F.m);if(!F.boss)st.hp=Math.round(st.hp*.72);return{name:k,el:F.el,spr:F.spr,F,parts:p,st,hp:st.hp,maxhp:st.hp,ki:5,mad:0,stat:{},mods:{},skills:F.sk,isP:false}}
-function mkPlayer(m){m=m||cur();const st=stats(m.parts,SP[m.sp].m);if(R.hunger===0){for(const k of['atk','mag','spd'])st[k]=Math.round(st[k]*.8)}return{name:m.sp,el:SP[m.sp].el,spr:SP[m.sp].spr,parts:m.parts,st,hp:R.hps[m.id],maxhp:st.hp,ki:5,mad:0,stat:{},mods:{},skills:m.equip,isP:true,trait:SP[m.sp].trait,mon:m.id}}
+function mkPlayer(m){m=m||cur();const st=mstats(m);const P=m.pass||[];if(R.hunger===0&&!P.includes('PAS-024')){for(const k of['atk','mag','spd'])st[k]=Math.round(st[k]*.8)}const u={name:m.sp,el:SP[m.sp].el,spr:monSpr(m),parts:m.parts,st,hp:R.hps[m.id],maxhp:st.hp,ki:5,mad:0,stat:{},mods:{},skills:m.equip,isP:true,trait:SP[m.sp].trait,mon:m.id,pass:P,bond:m.bond||1};if(P.includes('PAS-005'))addMod(u,'eva',1,99);if(u.trait==='swift')addMod(u,'spd',1,99);if(P.includes('PAS-025'))u.mad=30;return u}
 function syncTeam(){if(!B)return;const all=Object.values(B.team||{});all.push(B.p);all.forEach(f=>{R.hps[f.mon]=Math.max(0,f.hp)})}
 function teamAlive(ex){return R.party.filter(id=>id!==ex&&((B.team[id]?B.team[id].hp:R.hps[id])>0))}
-function switchTo(id,forced){const old=B.p;B.team[old.mon]=old;const nf=B.team[id]||mkPlayer(monById(id));B.team[id]=nf;nf.acted=0;nf.guard=0;B.p=nf;R.lead=id;sfx('buff');blog(forced?`<span class="y">${nf.name}が飛び出した！</span>`:`${old.name}を下げて、${nf.name}を出した`)}
-function startBattle(ent,ambushed){holdEnd&&holdEnd();if(FOES[ent.k].wild)dex('mon',ent.k,1);else dex('foe',ent.k);sfx(FOES[ent.k].boss?'boss':'encounter');if(!(R.hps[R.lead]>0)){const a=aliveIds()[0];if(a!=null)R.lead=a}B={ent,p:mkPlayer(),team:{},e:mkFoe(ent.k),turn:1,log:[],over:false};if(R.bless){R.bless--;addMod(B.p,'atk',1,99);addMod(B.p,'mag',1,99);B.log.push('<span class="y">石像の加護で力が湧く</span>')}if(R.ward){B.p.ward=R.ward.v;R.ward.n--;if(R.ward.n<=0)R.ward=null;B.log.push('<span class="b">護符が攻撃を和らげる</span>')}if(R.curse){R.curse=0;B.p.mad=60;B.log.push('<span class="p">呪いで狂気が高まっている</span>')}if(FOES[ent.k].shadow)B.log.push('<span class="r">影喰いが襲いかかる！</span>');B.log.push(FOES[ent.k].boss?`<span class="r">${ent.k}が立ちはだかる！</span>`:`${ent.k}が${ambushed?'襲いかかってきた':'現れた'}！`);if(FOES[ent.k].wild)B.log.push('<span class="g">野生の個体だ</span>');G.screen='battle';render()}
+function switchTo(id,forced){const old=B.p;B.team[old.mon]=old;const nf=B.team[id]||mkPlayer(monById(id));B.team[id]=nf;nf.acted=0;nf.guard=0;nf.swIn=B.turn;B.p=nf;R.lead=id;sfx('buff');blog(forced?`<span class="y">${nf.name}が飛び出した！</span>`:`${old.name}を下げて、${nf.name}を出した`)}
+function startBattle(ent,ambushed){holdEnd&&holdEnd();if(FOES[ent.k].wild)dex('mon',ent.k,1);else dex('foe',ent.k);sfx(FOES[ent.k].boss?'boss':'encounter');if(!(R.hps[R.lead]>0)){const a=aliveIds()[0];if(a!=null)R.lead=a}B={ent,p:mkPlayer(),team:{},e:mkFoe(ent.k),turn:1,log:[],over:false};if(R.bless){R.bless--;addMod(B.p,'atk',1,99);addMod(B.p,'mag',1,99);B.log.push('<span class="y">石像の加護で力が湧く</span>')}if(R.ward){B.p.ward=R.ward.v;R.ward.n--;if(R.ward.n<=0)R.ward=null;B.log.push('<span class="b">護符が攻撃を和らげる</span>')}if(R.curse){R.curse=0;B.p.mad=60;B.log.push('<span class="p">呪いで狂気が高まっている</span>')}if(FOES[ent.k].shadow)B.log.push('<span class="r">影喰いが襲いかかる！</span>');if(FOES[ent.k].say)B.log.push(`<span class="p">「${FOES[ent.k].say}」</span>`);tip('battle');if(FOES[ent.k].boss)tip('boss');B.log.push(FOES[ent.k].boss?`<span class="r">${ent.k}が立ちはだかる！</span>`:`${ent.k}が${ambushed?'襲いかかってきた':'現れた'}！`);if(FOES[ent.k].wild)B.log.push('<span class="g">野生の個体だ</span>');G.screen='battle';render()}
 function blog(t){B.log.push(t);if(B.log.length>6)B.log.shift()}
 function stage(u,k){const m=u.mods[k];return m?m[0]:0}
 function eff(u,k){let v=u.st[k];const s=stage(u,k);v*=s>=0?1+.3*s:1/(1-.3*s);if(k==='spd'&&u.stat['鈍重'])v*=.6;if((k==='atk'||k==='mag')){if(u.mad>=80)v*=1.35;else if(u.mad>=50)v*=1.2}return v}
 function addMod(u,k,d,t){const m=u.mods[k]||[0,0];m[0]=clamp(m[0]+d,-3,3);m[1]=Math.max(m[1],t);u.mods[k]=m}
 const STATN={atk:'攻撃',mag:'術',def:'防御',res:'術防御',spd:'速さ',eva:'回避',acc:'命中'};
-function hitChance(u,t,s){let a=s[4];if(EFF[s.id]&&EFF[s.id].sure)return 100;a*=1+.15*stage(u,'acc');a/=1+.15*stage(t,'eva');if(u.stat['乱気']||u.stat['眩み'])a-=20;return a}
-function dmgCalc(u,t,s,e){const ph=s[2]==='物理';const A=ph?eff(u,'atk'):eff(u,'mag'),D=ph?eff(t,'def'):eff(t,'res');let d=s[3]*Math.pow(A/D,.7)*.38*(.9+Math.random()*.2);if(!u.isP)d*=u.F&&u.F.boss?.66:.62;if(s[1]===u.el&&s[1]!=='無')d*=1.15;const a=aff(s[1],t.el);d*=a;if(t.stat['濡れ']){if(s[1]==='雷')d*=1.3;if(s[1]==='火')d*=.7}if(t.stat['眩み']&&!ph)d*=1.2;if(u.charge&&(u.charge==='all'||u.charge===s[1])){d*=2;u.charge=null}if(e.ambush&&!t.acted)d*=1.5;const cr=Math.random()<(e.crit?.25:.06);if(cr)d*=1.5;if(t.guard)d*=.5;if(t.minion)d*=.7;if(t.ward)d*=t.ward;if(t.resEl&&t.resEl===s[1])d*=.5;return{d:Math.max(1,Math.round(d)),a,cr}}
+function hitChance(u,t,s){let a=s[4];if(EFF[s.id]&&EFF[s.id].sure)return 100;if(HP_(u,'PAS-015'))a*=1.15;a*=1+.15*stage(u,'acc');a/=1+.15*stage(t,'eva');if(u.stat['乱気']||u.stat['眩み'])a-=20;return a}
+function dmgCalc(u,t,s,e){const ph=s[2]==='物理';const A=ph?eff(u,'atk'):eff(u,'mag'),D=ph?eff(t,'def'):eff(t,'res');let d=s[3]*Math.pow(A/D,.7)*.38*(.9+Math.random()*.2);if(!u.isP)d*=u.F&&u.F.boss?.66:.62;if(s[1]===u.el&&s[1]!=='無')d*=u.trait==='elpow'?1.25:1.15;if(HP_(u,'PAS-001')&&s[1]==='火')d*=1.15;if(HP_(u,'PAS-002')&&u.hp<=u.maxhp/3)d*=1.3;if(t.trait==='thick')d*=.9;if(HP_(t,'PAS-022')&&t.swIn===B.turn)d*=.5;const a=aff(s[1],t.el);d*=a;if(t.stat['濡れ']){if(s[1]==='雷')d*=1.3;if(s[1]==='火')d*=.7}if(t.stat['眩み']&&!ph)d*=1.2;if(u.charge&&(u.charge==='all'||u.charge===s[1])){d*=2;u.charge=null}if(e.ambush&&!t.acted)d*=1.5;const cr=Math.random()<(e.crit?.25:.06)+(HP_(u,'PAS-011')?.1:0);if(cr)d*=1.5;if(t.guard)d*=.5;if(t.minion)d*=.7;if(t.ward)d*=t.ward;if(t.resEl&&t.resEl===s[1])d*=.5;return{d:Math.max(1,Math.round(d)),a,cr}}
 function applySt(t,st){if(!t.stat[st])sfx('status');if(t.stat[st])return;t.stat[st]=st==='凍結'?1:3;blog(`${t.name}は${st}になった`)}
 function useSkill(u,t,id){
  const s=SK[id];s.id=id;const e=EFF[id]||{};u.ki-=s[5];blog(`${u.isP?'':'<span class="r">'}${u.name}の ${skHTML(id)}！${u.isP?'':'</span>'}`);
@@ -656,11 +704,12 @@ function useSkill(u,t,id){
  if(e.lamp&&u.isP&&R){R.lamp=Math.max(1,R.lamp-e.lamp);blog(`<span class="r">潜行の灯が${e.lamp}減った</span>`)}
  if(e.mad){u.mad=Math.min(100,u.mad+e.mad);blog(`<span class="p">${u.name}の狂気が上がった</span>`)}
  let landed=true;
- if(s[3]>0){const n=e.hits?e.hits[0]+rnd(e.hits[1]-e.hits[0]+1):1;let tot=0,hits=0;for(let i=0;i<n;i++){if(Math.random()*100>hitChance(u,t,s)){if(i===0){blog('しかし外れた');sfx('miss');pop(t,'MISS','#888780');landed=false}break}const r=dmgCalc(u,t,s,e);t.hp=Math.max(0,t.hp-r.d);tot+=r.d;hits++;sfx(r.cr?'crit':s[2]==='物理'?'hit':'magic');pop(t,'-'+r.d,r.a>1?'#FAC775':r.cr?'#F09595':'#FFFFFF');hitFx(t);onHurt(t,r.d);if(r.cr)blog('急所に当たった！');if(i===0&&r.a>1)blog('<span class="y">効果は抜群だ！</span>');if(i===0&&r.a<1)blog('<span class="m">効果はいまひとつ</span>');if(t.stat['凍結']&&s[2]==='物理'){delete t.stat['凍結'];blog(`${t.name}の凍結が解けた`)}if(t.hp<=0)break}
+ if(s[3]>0){const n=e.hits?e.hits[0]+rnd(e.hits[1]-e.hits[0]+1):1;let tot=0,hits=0;for(let i=0;i<n;i++){if(Math.random()*100>hitChance(u,t,s)){if(i===0){blog('しかし外れた');sfx('miss');pop(t,'MISS','#888780');landed=false}break}const r=dmgCalc(u,t,s,e);t.hp=Math.max(0,t.hp-r.d);if(t.hp<=0&&HP_(t,'PAS-020')&&!t.guts){t.guts=1;t.hp=1;blog(`<span class="y">${t.name}は根性で踏みとどまった！</span>`)}tot+=r.d;hits++;sfx(r.cr?'crit':s[2]==='物理'?'hit':'magic');pop(t,'-'+r.d,r.a>1?'#FAC775':r.cr?'#F09595':'#FFFFFF');hitFx(t);onHurt(t,r.d);if(r.cr)blog('急所に当たった！');if(i===0&&r.a>1)blog('<span class="y">効果は抜群だ！</span>');if(i===0&&r.a<1)blog('<span class="m">効果はいまひとつ</span>');if(t.stat['凍結']&&s[2]==='物理'){delete t.stat['凍結'];blog(`${t.name}の凍結が解けた`)}if(t.hp<=0)break}
   if(hits){blog(`${t.name}に${tot}のダメージ${hits>1?'（'+hits+'回）':''}`)}
   if(landed){if(e.drain){const h=Math.round(tot*e.drain/100);u.hp=Math.min(u.maxhp,u.hp+h);blog(`${h}吸収した`)}if(e.recoil){const h=Math.round(tot*e.recoil/100);u.hp=Math.max(1,u.hp-h);blog(`反動で${h}のダメージ`)}}
  }else if(e.st||e.debuff||e.kiDrain){if(Math.random()*100>hitChance(u,t,s)){blog('しかし外れた');landed=false}}
- if(landed&&t.hp>0){if(e.st&&(s[3]===0||s[3]<=20||Math.random()<.3))applySt(t,e.st);if(e.debuff)e.debuff.forEach(([k,d,tt])=>{addMod(t,k,-d,tt);blog(`${t.name}の${STATN[k]}が下がった`)});if(e.kiDrain){t.ki=Math.max(0,t.ki-e.kiDrain);blog(`${t.name}の気が${e.kiDrain}減った`)}}
+ if(landed&&t.hp>0&&s[3]>0){if(u.trait==='wet'&&Math.random()<.2)applySt(t,'濡れ');if(u.trait==='burn'&&Math.random()<.2)applySt(t,'火傷');if(HP_(u,'PAS-016')&&Math.random()<.1)applySt(t,'恐怖');if(HP_(t,'PAS-009')&&s[2]==='物理'&&u.hp>0&&Math.random()<.2){blog(`${t.name}の静電体がはじけた`);applySt(u,'麻痺')}}
+ if(landed&&t.hp>0){if(e.st&&(s[3]===0||s[3]<=20||Math.random()<(u.trait==='stcast'?.55:.3)))applySt(t,e.st);if(e.debuff&&HP_(t,'PAS-007'))blog(`${t.name}は不動で能力が下がらない`);else if(e.debuff)e.debuff.forEach(([k,d,tt])=>{addMod(t,k,-d,tt);blog(`${t.name}の${STATN[k]}が下がった`)});if(e.kiDrain){t.ki=Math.max(0,t.ki-e.kiDrain);blog(`${t.name}の気が${e.kiDrain}減った`)}}
  if(e.buff)sfx('buff');if(e.buff)e.buff.forEach(([k,d,tt])=>{addMod(u,k,d,tt);blog(`${u.name}の${STATN[k]}が上がった`)});
  if(e.selfDebuff)e.selfDebuff.forEach(([k,d,tt])=>{addMod(u,k,-d,tt);blog(`${u.name}の${STATN[k]}が下がった`)});
  if(e.selfSt)applySt(u,e.selfSt);
@@ -673,11 +722,11 @@ function useSkill(u,t,id){
  if(e.rest)u.rest=1;
  if(s[9]&&u.isP)u.mad=Math.min(100,u.mad+10);
 }
-function onHurt(t,d){t.mad=Math.min(100,t.mad+Math.round(d/t.maxhp*45))}
+function onHurt(t,d){t.mad=Math.min(100,t.mad+Math.round(d/t.maxhp*45*(t.trait==='madless'?.5:1)))}
 function canAct(u){if(u.rest){u.rest=0;blog(`${u.name}は動けない`);return false}if(u.stat['凍結']){blog(`${u.name}は凍っていて動けない`);return false}if(u.stat['麻痺']&&Math.random()<.25){blog(`${u.name}は痺れて動けない`);return false}return true}
 function aiPick(u){const usable=u.skills.filter(id=>SK[id][5]<=u.ki);if(!usable.length)return null;const atk=usable.filter(id=>SK[id][3]>0),sup=usable.filter(id=>SK[id][3]===0&&!(EFF[id]&&EFF[id].buff&&u.mods[EFF[id].buff[0][0]]));if(sup.length&&Math.random()<.3)return pick(sup);if(atk.length){atk.sort((a,b)=>SK[b][3]-SK[a][3]);return Math.random()<.5?atk[0]:pick(atk)}return pick(usable)}
 function act(u,t,cmd){if(B.over||u.hp<=0)return;if(!canAct(u))return;
- if(u.isP&&u.mad>=80&&Math.random()<.25&&cmd!=='flee'){const c=aiPick(u);if(c){blog('<span class="p">暴走！命令を聞かない</span>');cmd=c}}
+ if(u.isP&&u.mad>=80&&Math.random()<.25-.03*((u.bond||1)-1)&&cmd!=='flee'){const c=aiPick(u);if(c){blog('<span class="p">暴走！命令を聞かない</span>');cmd=c}}
  if(cmd==='guard'){u.guard=1;u.ki=Math.min(20,u.ki+1);blog(`${u.name}は身構えた`);return}
  if(cmd==='wait'){blog(`${u.name}は様子をうかがっている`);return}
  if(cmd.startsWith('it:')){const id=cmd.slice(3),it=IT[id];G.bag[id]--;
@@ -686,13 +735,13 @@ function act(u,t,cmd){if(B.over||u.hp<=0)return;if(!canAct(u))return;
   if(it.c==='ward'){u.ward=it.v;if(it.k>1)R.ward={v:it.v,n:it.k-1};blog(`<span class="b">${it.n}が攻撃を和らげる</span>`);return}
   if(it.c==='smoke'){blog(`${it.n}を投げた！`);if(Math.random()<it.v){blog('うまく逃げ切った');B.fled=1;B.over=true;if(it.cool===1)B.ent.cool=60;if(it.cool===2)R.ents.forEach(f=>{if(f.type==='foe')f.cool=80})}else blog('逃げられなかった');return}}
  if(cmd.startsWith('sw:')){switchTo(+cmd.slice(3),false);return}
- if(cmd==='flee'){if(Math.random()<.4){blog('うまく逃げ切った');B.fled=1;B.over=true}else blog('逃げられなかった');return}
+ if(cmd==='flee'){if(Math.random()<(HP_(u,'PAS-023')?.7:.4)){blog('うまく逃げ切った');B.fled=1;B.over=true}else blog('逃げられなかった');return}
  useSkill(u,t,cmd);u.acted=1}
 function prioOf(cmd){return cmd&&EFF[cmd]&&EFF[cmd].prio?1:0}
 function turn(cmd){
  if(B.over||B.forced)return;const p=B.p,e=B.e;p.acted=0;e.acted=0;p.guard=0;e.guard=0;
  const ecmd=aiPick(e)||'wait';
- let pp=prioOf(cmd);if(p.prioNext&&!String(cmd).startsWith('it:')){pp=1;p.prioNext=0}
+ let pp=prioOf(cmd);if(B.turn===1&&HP_(p,'PAS-006'))pp=1;if(p.prioNext&&!String(cmd).startsWith('it:')){pp=1;p.prioNext=0}
  const pf=pp*1000+eff(p,'spd'),ef=prioOf(ecmd)*1000+eff(e,'spd');
  const order=pf>=ef?[[p,e,cmd],[e,p,ecmd]]:[[e,p,ecmd],[p,e,cmd]];
  for(const[u,t,c]of order){act(u,u.isP?t:B.p,c);if(checkEnd())return renderB()}
@@ -700,24 +749,24 @@ function turn(cmd){
  if(e.F.gim==='double'&&B.turn>=2){const c2=aiPick(e);if(c2){act(e,B.p,c2);if(checkEnd())return renderB()}}
  endTurn();checkEnd();renderB()}
 function endTurn(){const p=B.p,e=B.e;
- for(const u of[p,e]){if(u.hp<=0)continue;if(u.stat['火傷']){const d=Math.max(1,Math.round(u.maxhp*.05));u.hp=Math.max(0,u.hp-d);blog(`${u.name}は火傷で${d}のダメージ`)}if(u.stat['恐怖']){u.mad=Math.min(100,u.mad+15)}if(u.regen&&u.regen[1]>0){const h=Math.round(u.maxhp*u.regen[0]/100);u.hp=Math.min(u.maxhp,u.hp+h);u.regen[1]--}
+ for(const u of[p,e]){if(u.hp<=0)continue;if((HP_(u,'PAS-003')||u.trait==='regen')&&u.hp<u.maxhp){u.hp=Math.min(u.maxhp,u.hp+Math.max(1,Math.round(u.maxhp*(HP_(u,'PAS-003')?.04:.03))))}if(HP_(u,'PAS-004'))for(const k in u.stat)u.stat[k]--;if(HP_(u,'PAS-014')&&B.turn%3===0&&Object.keys(u.stat).length){u.stat={};blog(`${u.name}の浄化体が状態異常を払った`)}if(HP_(u,'PAS-026'))u.mad=Math.min(100,u.mad+8);if(u.stat['火傷']){const d=Math.max(1,Math.round(u.maxhp*.05));u.hp=Math.max(0,u.hp-d);blog(`${u.name}は火傷で${d}のダメージ`)}if(u.stat['恐怖']){u.mad=Math.min(100,u.mad+15)}if(u.regen&&u.regen[1]>0){const h=Math.round(u.maxhp*u.regen[0]/100);u.hp=Math.min(u.maxhp,u.hp+h);u.regen[1]--}
   for(const k in u.stat){u.stat[k]--;if(u.stat[k]<=0){delete u.stat[k];if(u.hp>0)blog(`${u.name}の${k}が治った`)}}
   for(const k in u.mods){u.mods[k][1]--;if(u.mods[k][1]<=0)delete u.mods[k]}
-  u.ki=Math.min(20,u.ki+2)}
+  u.ki=Math.min(20,u.ki+2+(u.trait==='kiplus'?1:0))}
  if(e.F.gim==='minion'){if(e.minion){e.minion--;if(!e.minion)blog('子分が逃げていった')}if(B.turn%3===0&&e.hp>0){e.minion=2;blog('<span class="r">チュウザンが子分を呼んだ！（被ダメ軽減）</span>')}}
  if(e.F.gim==='double'&&!B.tail&&e.hp>0&&e.hp<e.maxhp/2){B.tail=1;addMod(e,'spd',1,99);blog('<span class="r">ハヤテドリは追い風をまとった！</span>')}
- if(p.mad>=80&&!B.madWarn){B.madWarn=1;blog('<span class="p">狂気が限界に近い…暴走するかも</span>')}
+ if(p.mad>=50)tip('mad');if(p.mad>=80&&!B.madWarn){B.madWarn=1;blog('<span class="p">狂気が限界に近い…暴走するかも</span>')}
  B.turn++}
-function checkEnd(){const p=B.p,e=B.e;if(B.fled){B.over=true;syncTeam();setTimeout(()=>{G.screen='map';render()},400);return true}if(e.hp<=0){B.over=true;blog(`<span class="y">${e.name}を倒した！</span>`);sfx('win');stat('wins');if(e.F.boss)stat('boss'+e.F.boss);if(e.F.shadow)stat('kage');if(e.name==='ミミック')stat('mimic');{const n=Math.round((1+Math.floor(R.floor/2)+rnd(2))*((ANOM[R.anom]||{}).shards||1)*chainMul())+(e.F.shadow?((ANOM[R.anom]||{}).kage?40:25):0)+(e.F.boss?10:0);G.bag.shards+=n;got('灯片',n);R.got.wins++;blog(`灯片を${n}手に入れた`);if(Math.random()<.06||e.F.boss||e.F.shadow){const v=rollVal();addVal(v);blog(`<span class="y">${v}</span>を落とした`)}if(e.F.boss&&G.cleared[e.F.boss]!==true){const id=Math.random()<.6?'hiyaku':'kessho';itGive(id);blog(`<span class="p">${IT[id].n}</span>を手に入れた！`)}if(e.F.shadow){const c=pick(BOOKCOL);G.bag.books.push(c);R.kage=2;blog(`未鑑定の書（${c}）を落とした`)}}syncTeam();R.lead=p.mon;R.hp=Math.min(p.maxhp,Math.max(1,p.hp)+Math.round(p.maxhp*.1));{const dn=R.party.filter(id=>!(R.hps[id]>0));if(dn.length){dn.forEach(id=>R.hps[id]=1);blog('倒れた仲間は、灯でかろうじて持ちこたえた')}}setTimeout(()=>{G.screen='result';render()},700);return true}if(p.hp<=0){R.hps[p.mon]=0;B.team[p.mon]=p;if(teamAlive(p.mon).length){if(!B.forced){B.forced=true;blog(`<span class="r">${p.name}は倒れた…次の仲間を選ぼう</span>`);sfx('status')}return true}B.over=true;blog(`<span class="r">${p.name}は倒れた…</span>`);sfx('lose');setTimeout(()=>{endRun('lose')},900);return true}return false}
+function checkEnd(){const p=B.p,e=B.e;if(B.fled){B.over=true;syncTeam();setTimeout(()=>{G.screen='map';render()},400);return true}if(e.hp<=0){B.over=true;blog(`<span class="y">${e.name}を倒した！</span>`);sfx('win');stat('wins');if(e.F.boss)stat('boss'+e.F.boss);if(e.F.shadow)stat('kage');if(e.name==='ミミック')stat('mimic');{const n=Math.round((1+Math.floor(R.floor/2)+rnd(2))*((ANOM[R.anom]||{}).shards||1)*chainMul())+(e.F.shadow?((ANOM[R.anom]||{}).kage?40:25):0)+(e.F.boss?10:0);G.bag.shards+=n;got('灯片',n);R.got.wins++;blog(`灯片を${n}手に入れた`);winHooks(p);if(Math.random()<.06||e.F.boss||e.F.shadow){const v=rollVal();addVal(v);blog(`<span class="y">${v}</span>を落とした`)}if(e.F.boss&&G.cleared[e.F.boss]!==true){const id=Math.random()<.6?'hiyaku':'kessho';itGive(id);blog(`<span class="p">${IT[id].n}</span>を手に入れた！`)}if(e.F.shadow){const c=pick(BOOKCOL);G.bag.books.push(c);R.kage=2;blog(`未鑑定の書（${c}）を落とした`)}}syncTeam();R.lead=p.mon;R.hp=Math.min(p.maxhp,Math.max(1,p.hp)+Math.round(p.maxhp*.1));{const dn=R.party.filter(id=>!(R.hps[id]>0));if(dn.length){dn.forEach(id=>R.hps[id]=1);blog('倒れた仲間は、灯でかろうじて持ちこたえた')}}setTimeout(()=>{G.screen='result';render()},700);return true}if(p.hp<=0){R.hps[p.mon]=0;B.team[p.mon]=p;if(teamAlive(p.mon).length){if(!B.forced){B.forced=true;blog(`<span class="r">${p.name}は倒れた…次の仲間を選ぼう</span>`);sfx('status')}return true}B.over=true;blog(`<span class="r">${p.name}は倒れた…</span>`);sfx('lose');setTimeout(()=>{endRun('lose')},900);return true}return false}
 /* ---------- result ---------- */
 function rResult(){const e=B.e,F=e.F,m=cur();
  const c=el('');c.style.cssText='display:flex;justify-content:center;opacity:.6';c.appendChild(drawSpr(e.spr,F.boss?7:6));app.appendChild(c);
- if(F.boss){if(!B.reward){B.reward=1;G.cores.push(F.core);G.cleared[F.boss]=true;if(Math.random()<.5)G.bag.lantern++;const bc=pick(BOOKCOL);G.bag.books.push(bc);B.rmsg=`灯の核（${F.core}）を手に入れた！<br>未鑑定の書（${bc}）を手に入れた${G.bag.lantern?'':''}`;R.map[e.ent?0:0];R.ents=R.ents.filter(x=>x!==B.ent);R.map[B.ent.y][B.ent.x]='>';computeVis();}
+ if(F.boss){if(!B.reward){B.reward=1;G.cores.push(F.core);G.cleared[F.boss]=true;if(Math.random()<.5)G.bag.lantern++;const bc=pick(BOOKCOL);G.bag.books.push(bc);const pb={c:'金',id:pick(pasPool())};G.bag.books.push(pb);B.rmsg=`${F.fall?`<span class="p">「${F.fall}」</span><br>`:''}灯の核（${F.core}）を手に入れた！<br>未鑑定の書（${bc}）と、心得の書（${SK[pb.id][0]}）を手に入れた`;R.map[e.ent?0:0];R.ents=R.ents.filter(x=>x!==B.ent);R.map[B.ent.y][B.ent.x]='>';computeVis();}
   app.appendChild(el(`<div class="bx"><span class="y">${e.name}を倒した</span><br>${B.rmsg}<br><span class="m s">野営地で核を目覚めさせると仲間になる。階段が現れた。</span></div>`));
   app.appendChild(btn('先へ進む',()=>{B=null;G.screen='map';rlog('ボスのいた場所に階段が現れた');render()}));return}
- app.appendChild(el(`<div class="m" style="text-align:center">${e.name}は弱っている</div>`));
- const w={};PARTS.forEach(k=>w[k]=1);w[F.fav]+=1.5;SP[m.sp].fav.forEach(k=>w[k]+=.5);
- app.appendChild(btn(`<div class="g" style="text-align:left">▶ 捕食する</div><div class="s m" style="text-align:left">ランダムな部位Lv+1・飢え+25<br>${PN[F.fav]}がやや出やすい</div>`,()=>{let tot=PARTS.reduce((a,k)=>a+w[k],0),r=Math.random()*tot,k=PARTS[0];for(const x of PARTS){r-=w[x];if(r<=0){k=x;break}}m.parts[k]++;R.gains[k]++;R.gby=R.gby||{};(R.gby[m.id]=R.gby[m.id]||{})[k]=(R.gby[m.id][k]||0)+1;R.got.eat++;stat('eat');sfx('level');R.hunger=Math.min(100,R.hunger+25);const mx=stats(m.parts,SP[m.sp].m).hp;R.hp=Math.min(mx,R.hp+Math.round(mx*.15));done(`捕食した。<span class="y">${PN[k]}がLv${m.parts[k]}に上がった！</span>`)}));
+ app.appendChild(el(`<div class="m" style="text-align:center">${e.name}は弱っている</div>`));tip('eat');hirameki(m,e);
+ const w={};PARTS.forEach(k=>w[k]=1);w[F.fav]+=1.5;SP[m.sp].fav.forEach(k=>w[k]+=.5);for(const k in(m.apt||{}))w[k]+=m.apt[k]*.5;
+ app.appendChild(btn(`<div class="g" style="text-align:left">▶ 捕食する</div><div class="s m" style="text-align:left">ランダムな部位Lv+1・飢え+25<br>${PN[F.fav]}がやや出やすい</div>`,()=>{let tot=PARTS.reduce((a,k)=>a+w[k],0),r=Math.random()*tot,k=PARTS[0];for(const x of PARTS){r-=w[x];if(r<=0){k=x;break}}m.parts[k]++;R.gains[k]++;R.gby=R.gby||{};(R.gby[m.id]=R.gby[m.id]||{})[k]=(R.gby[m.id][k]||0)+1;R.got.eat++;stat('eat');sfx('level');R.hunger=Math.min(100,R.hunger+((m.pass||[]).includes('PAS-019')?40:25));let ex='';if((m.pass||[]).includes('PAS-025')||((m.pass||[]).includes('PAS-017')&&Math.random()<.2)){const k2=pick(PARTS);m.parts[k2]++;R.gains[k2]++;R.gby[m.id][k2]=(R.gby[m.id][k2]||0)+1;ex=`<br><span class="g">さらに${PN[k2]}もLv${m.parts[k2]}に！</span>`}const mx=mstats(m).hp;R.hp=Math.min(mx,R.hp+Math.round(mx*.15));done(`捕食した。<span class="y">${PN[k]}がLv${m.parts[k]}に上がった！</span>`+ex)}));
  const sid=F.seal;const known=m.learned.includes(sid);
  app.appendChild(btn(`<div class="b" style="text-align:left">　封印する</div><div class="s m" style="text-align:left">スキル ${skHTML(sid)} を奪う${known?'（習得済み）':''}<br>成功率 60%　部位は上がらない</div>`,()=>{if(Math.random()<.6){R.got.seal++;stat('seal');sfx('seal');done(`封印に成功！${skHTML(sid)}を奪った。<br>${learn(m,sid)}`)}else done('<span class="m">封印に失敗した…灰になって消えた</span>')}));
  if(F.wild&&G.bag.lantern>0)app.appendChild(btn(`<div class="y" style="text-align:left">　灯籠封じ（残り${G.bag.lantern}）</div><div class="s m" style="text-align:left">${e.name}を個体ごと仲間にする<br>成功率 50%　失敗しても灯籠は消える</div>`,()=>{G.bag.lantern--;if(Math.random()<.5){G.mons.push(mkMon(e.name));R.got.mons.push(e.name);done(`<span class="y">${e.name}を灯籠に封じた！</span>仲間になった`)}else done('<span class="m">灯籠が砕けた…</span>')}));
@@ -873,7 +922,7 @@ function rFuse(){const m=cur(),f=UI.fz||(UI.fz={a:null,b:null});
 /* ---------- sound ---------- */
 let AC=null,MG=null,BGG=null,SG=null,NB=null;
 function sndCfg(){if(!G.snd)G.snd={se:true,bgm:true};return G.snd}
-function audioInit(){if(AC)return;try{AC=new(window.AudioContext||window.webkitAudioContext)();MG=AC.createGain();MG.gain.value=.55;MG.connect(AC.destination);BGG=AC.createGain();BGG.gain.value=.28;BGG.connect(MG);SG=AC.createGain();SG.gain.value=.9;SG.connect(MG)}catch(e){AC=null}}
+function audioInit(){if(AC)return;try{AC=new(window.AudioContext||window.webkitAudioContext)();MG=AC.createGain();MG.gain.value=.55;MG.connect(AC.destination);BGG=AC.createGain();BGG.gain.value=.28;BGG.connect(MG);SG=AC.createGain();SG.gain.value=.9;SG.connect(MG);applyCfg()}catch(e){AC=null}}
 document.addEventListener('pointerdown',()=>{audioInit();if(AC&&AC.state==='suspended')AC.resume().catch(()=>{});if(AC&&!BGM.timer&&BGM.want)bgm(BGM.want,true)},{capture:true});
 function tone(f,d,type,v,slide,dest,when){if(!AC)return;if(dest!==BGG&&!sndCfg().se)return;const t0=AC.currentTime+(when||0);const o=AC.createOscillator(),g=AC.createGain();o.type=type||'square';o.frequency.setValueAtTime(f,t0);if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(30,f*slide),t0+d);g.gain.setValueAtTime(v||.15,t0);g.gain.exponentialRampToValueAtTime(.0008,t0+d);o.connect(g);g.connect(dest||SG);o.start(t0);o.stop(t0+d+.03)}
 function noise(d,v,hp,when){if(!AC||!sndCfg().se)return;if(!NB){NB=AC.createBuffer(1,AC.sampleRate,AC.sampleRate);const a=NB.getChannelData(0);for(let i=0;i<a.length;i++)a[i]=Math.random()*2-1}const t0=AC.currentTime+(when||0);const s=AC.createBufferSource();s.buffer=NB;const f=AC.createBiquadFilter();f.type='highpass';f.frequency.value=hp||800;const g=AC.createGain();g.gain.setValueAtTime(v||.2,t0);g.gain.exponentialRampToValueAtTime(.0008,t0+d);s.connect(f);f.connect(g);g.connect(SG);s.start(t0);s.stop(t0+d+.03)}
@@ -903,7 +952,7 @@ function bgm(name,force){BGM.want=name;if(!AC)return;if(BGM.cur===name&&BGM.time
  BGM.timer=setInterval(()=>{if(!AC||!sndCfg().bgm)return;const i=BGM.step%T.b.length,tr=name==='dungeon'?BGM.tr:0;if(T.b[i])tone(mf(T.b[i]+tr),dt*3.5,name==='boss'?'sawtooth':'triangle',name==='battle'||name==='boss'?.09:.12,0,BGG);if(T.l[i])tone(mf(T.l[i]+tr),dt*(name==='dungeon'||name==='title'?6:1.8),T.w,name==='boss'?.035:.06,0,BGG);if((name==='battle'||name==='boss')&&i%4===0)noise(.04,.05,4000);BGM.step++},dt*1000)}
 function THT(){return[0,2,-3,5,-1,3,-5,7,4,-2][R.theme||0]}
 function bgmFor(){const s=G.screen;if(s==='title'||s==='pick')return'title';if(s==='map')return'dungeon';if(s==='battle'||s==='result')return B&&B.e&&B.e.F.boss?'boss':'battle';return'camp'}
-function sndToggle(k){const c=sndCfg();c[k]=!c[k];if(k==='bgm'){BGM.cur=null;bgm(bgmFor(),true)}save()}
+function sndToggle_old(k){const c=sndCfg();c[k]=!c[k];if(k==='bgm'){BGM.cur=null;bgm(bgmFor(),true)}save()}
 function sndBtns(){const c=sndCfg();const w=document.createElement('div');w.className='g2';w.appendChild(btn(`効果音：${c.se?'ON':'OFF'}`,()=>{sndToggle('se');render()}));w.appendChild(btn(`BGM：${c.bgm?'ON':'OFF'}`,()=>{sndToggle('bgm');render()}));return w}
 /* ---------- tiered items ---------- */
 const IT={
@@ -923,7 +972,7 @@ function itCnt(id){return G.bag[id]||0}
 function itGive(id,n){G.bag[id]=(G.bag[id]||0)+(n||1);got(IT[id].n,n||1)}
 function tierPick(c){const ok=ITC[c].filter(itOpen);if(c==='battle'||c==='explore')return pick(ok);const w=ok.map((_,i)=>Math.pow(.45,i));let r=Math.random()*w.reduce((a,b)=>a+b,0);for(let i=0;i<ok.length;i++){r-=w[i];if(r<=0)return ok[i]}return ok[0]}
 function itSummary(){return Object.keys(IT).filter(k=>itCnt(k)).map(k=>`${IT[k].n}${itCnt(k)}`).join('　')||'消耗品なし'}
-function useMapItem(id){const it=IT[id],m=cur(),mx=stats(m.parts,SP[m.sp].m).hp;G.bag[id]--;
+function useMapItem(id){const it=IT[id],m=cur(),mx=mstats(m).hp;G.bag[id]--;
  if(it.c==='heal'){R.hp=Math.min(mx,R.hp+Math.round(mx*it.v));rlog(`${it.n}でHPが回復した`)}
  if(it.c==='food'){R.hunger=Math.min(100,R.hunger+it.v);if(it.hp)R.hp=Math.min(mx,R.hp+Math.round(mx*it.hp));rlog(`${it.n}を食べた`)}
  if(it.c==='ward'){R.ward={v:it.v,n:it.k};rlog(`<span class="b">${it.n}が淡く光っている</span>`)}
@@ -970,6 +1019,7 @@ const ACH=[
  ['curse1','呪われし者','呪いの書を読む',()=>S('curse')>=1,20],['buy10','お得意さま','行商人で10回買う',()=>S('buy')>=10,40],['pray5','信心深き者','石像に5回祈る',()=>S('pray')>=5,40],
  ['mon5','灯の群れ','仲間を5体にする',()=>(G.mons||[]).length>=5,50],['rich','大金持ち','金庫に1000灯片を貯める',()=>G.bank>=1000,100],['fac10','野営地の主','施設のレベル合計を10にする',()=>Object.keys(FAC).reduce((a,k)=>a+fl(k),0)>=10,100],
  ['death1','灯は消えず','初めて全滅する（めげずに次へ）',()=>S('death')>=1,20],['rankC','一人前','ランクCの仲間を育てる',()=>(G.mons||[]).some(m=>'CBAS'.includes(rank(m.parts))),80],
+ ['breed1','灯を合わせる','灯合わせで新しい種族を生む',()=>S('breed')>=1,80],['alt1','色違いの灯','分灯で亜種を生む',()=>S('alt')>=1,80],['bond5','かけがえのない灯','仲間との絆が5になる',()=>(G.mons||[]).some(m=>(m.bond||1)>=5),100],['rescue3','灯の救い手','囚われの灯を3体助ける',()=>S('rescue')>=3,60],['hira10','ひらめきの人','10回ひらめく',()=>S('hira')>=10,60],['pass3','心得る者','パッシブを3種覚える',()=>(G.mons||[]).some(m=>m.learned.filter(isPas).length>=3),50],
  ['expe1','遠征の便り','遠征から仲間が帰ってくる',()=>S('expe')>=1,50],['dexhalf','半分の記録','図鑑の総合達成率50%',()=>dexTotal()>=.5,150]];
 let TQ=[],TB=false;function toast(h){TQ.push(h);if(!TB)nextToast()}
 function nextToast(){const h=TQ.shift();if(!h){TB=false;return}TB=true;const d=document.createElement('div');d.className='toast';d.innerHTML=h;document.body.appendChild(d);setTimeout(()=>d.classList.add('out'),2200);setTimeout(()=>{d.remove();nextToast()},2700)}
@@ -1003,27 +1053,170 @@ function chipBar(state,sorts,onc){const w=document.createElement('div');w.style.
  const c=document.createElement('div');c.className='chips';ELS.forEach(e=>{const b=btn(e,()=>{state.el=e;onc()});if(state.el===e)b.className='on';if(e!=='全')b.style.color=state.el===e?'':ELC[e];c.appendChild(b)});w.appendChild(c);
  const s=document.createElement('div');s.className='chips';s.appendChild(el('<span class="s m" style="align-self:center">並び：</span>'));sorts.forEach(o=>{const b=btn(o,()=>{state.sort=o;onc()});if(state.sort===o)b.className='on';s.appendChild(b)});w.appendChild(s);return w}
 UI.sf={el:'全',sort:'取得順'};UI.pf={el:'全',sort:'取得順'};
-function sfApply(ids){const f=UI.sf;let a=ids.filter(id=>f.el==='全'||SK[id][1]===f.el);const ri=id=>RANKS.indexOf(SK[id][6]);
+function sfApply(ids){const f=UI.sf;let a=ids.filter(id=>!isPas(id)&&(f.el==='全'||SK[id][1]===f.el));const ri=id=>RANKS.indexOf(SK[id][6]);
  if(f.sort==='ランク')a.sort((x,y)=>ri(y)-ri(x));if(f.sort==='威力')a.sort((x,y)=>SK[y][3]-SK[x][3]);if(f.sort==='属性')a.sort((x,y)=>ELS.indexOf(SK[x][1])-ELS.indexOf(SK[y][1]));if(f.sort==='気')a.sort((x,y)=>SK[x][5]-SK[y][5]);return a}
 const SKSORT=['取得順','ランク','威力','属性','気'];
 function rParty(){const f=UI.pf;const pt=partyIds(),sl=pSlots();const busy=new Set((G.exp||[]).map(x=>x.id));
  app.appendChild(el(`<div class="row"><span class="y">仲間</span><span class="s">同行 <span class="y">${pt.length}/${sl}</span>　${G.mons.length}体</span></div>`));
  app.appendChild(el(`<div class="s m">タップで同行に入れる／外す。先頭の仲間が最初に戦う。${sl<3?`<br>同行枠は${sl<2?'B5のボスを倒すと2体、':''}B10のボスを倒すと3体に増える。`:''}</div>`));
- if(pt.length){const pr=document.createElement('div');pr.className='bx';pr.style.cssText+='display:flex;gap:8px;align-items:flex-end;justify-content:center';pt.forEach((id,i)=>{const mm=monById(id);const d=document.createElement('div');d.style.textAlign='center';const cv=drawSpr(SP[mm.sp].spr,4);cv.style.margin='0 auto';d.appendChild(cv);d.appendChild(el(`<div class="s ${i?'':'y'}">${i?i+1:'先頭'}　${mm.sp}</div>`));pr.appendChild(d)});app.appendChild(pr)}
+ if(pt.length){const pr=document.createElement('div');pr.className='bx';pr.style.cssText+='display:flex;gap:8px;align-items:flex-end;justify-content:center';pt.forEach((id,i)=>{const mm=monById(id);const d=document.createElement('div');d.style.textAlign='center';const cv=drawSpr(monSpr(mm),4);cv.style.margin='0 auto';d.appendChild(cv);d.appendChild(el(`<div class="s ${i?'':'y'}">${i?i+1:'先頭'}　${mm.sp}</div>`));pr.appendChild(d)});app.appendChild(pr)}
  app.appendChild(chipBar(f,['取得順','ランク','属性','種族'],render));
  let list=G.mons.map((m,i)=>({m,i})).filter(o=>f.el==='全'||SP[o.m.sp].el===f.el);
  if(f.sort==='ランク')list.sort((a,b)=>lvSum(b.m.parts)-lvSum(a.m.parts));if(f.sort==='属性')list.sort((a,b)=>ELS.indexOf(SP[a.m.sp].el)-ELS.indexOf(SP[b.m.sp].el));if(f.sort==='種族')list.sort((a,b)=>a.m.sp.localeCompare(b.m.sp,'ja'));
  const g=document.createElement('div');g.className='g2';
- list.forEach(({m,i})=>{const inP=pt.indexOf(m.id),away=busy.has(m.id);const c=document.createElement('div');c.className='card'+(inP>=0?' sel':'');c.style.cursor='pointer';const cv=drawSpr(SP[m.sp].spr,SP[m.sp].big?4:5);cv.style.margin='0 auto';if(away)cv.style.opacity='.4';c.appendChild(cv);
-  c.appendChild(el(`<div class="s">${inP===0?'<span class="y">先頭 </span>':inP>0?`<span class="y">同行${inP+1} </span>`:''}${m.sp} <span style="color:${ELC[SP[m.sp].el]}">${SP[m.sp].el}</span></div><div class="s m">ランク${rank(m.parts)}　Lv計${lvSum(m.parts)}${away?'　<span class="p">遠征中</span>':''}</div>`));
+ list.forEach(({m,i})=>{const inP=pt.indexOf(m.id),away=busy.has(m.id);const c=document.createElement('div');c.className='card'+(inP>=0?' sel':'');c.style.cursor='pointer';const cv=drawSpr(monSpr(m),SP[m.sp].big?4:5);cv.style.margin='0 auto';if(away)cv.style.opacity='.4';c.appendChild(cv);
+  c.appendChild(el(`<div class="s">${inP===0?'<span class="y">先頭 </span>':inP>0?`<span class="y">同行${inP+1} </span>`:''}${m.sp} <span style="color:${ELC[SP[m.sp].el]}">${SP[m.sp].el}</span></div><div class="s m">ランク${rank(m.parts)}　Lv計${lvSum(m.parts)}${baseSum(m)?'<span class="g">+'+baseSum(m)+'</span>':''}${m.alt?'　<span class="p">亜種</span>':''}${away?'　<span class="p">遠征中</span>':''}</div>`));
   const bs=document.createElement('div');bs.className='chips';bs.style.justifyContent='center';bs.style.marginTop='4px';
   if(inP>0){const b=btn('先頭へ',ev=>{ev&&ev.stopPropagation();G.party.splice(inP,1);G.party.unshift(m.id);G.active=i;render()});bs.appendChild(b)}
   const d=btn('詳細',ev=>{ev&&ev.stopPropagation();G.active=i;G.screen='mon';render()});bs.appendChild(d);c.appendChild(bs);
   c.onclick=()=>{if(away){toast('遠征中の仲間は連れていけない');return}if(inP>=0){if(G.party.length>1)G.party.splice(inP,1);else toast('同行は最低1体必要')}else{if(G.party.length>=sl){if(sl===1){G.party=[m.id]}else{toast(`同行は${sl}体まで`);return}}else G.party.push(m.id)}G.active=G.mons.findIndex(x=>x.id===G.party[0]);sfx('click');render()};g.appendChild(c)});
  if(!list.length)g.appendChild(el('<div class="m s">該当する仲間がいない</div>'));
  app.appendChild(g);app.appendChild(btn('もどる',()=>{G.screen='camp';render()}))}
+/* ---------- v3: breeding, passives, settings, tutorial, story ---------- */
+const GVER=3;
+function defCfg(){return{bgm:70,se:80,font:1,walk:1,left:false,tips:true}}
+function cfg(){if(!G.cfg)G.cfg=defCfg();return G.cfg}
+const HP_=(u,id)=>!!(u&&u.pass&&u.pass.includes(id));
+const isPas=id=>!!(SK[id]&&SK[id][2]==='パッシブ');
+function pasPool(){return Object.keys(SK).filter(id=>isPas(id)&&!SK[id][9])}
+function passSlots(m){const r=rank(m.parts);return 'ED'.includes(r)?1:'CB'.includes(r)?2:3}
+const STATN2={hp:'HP',atk:'力',mag:'術',def:'守り',res:'抗い',spd:'速さ'};
+const TRAITD={double1:'最初のターンに2回行動',elpow:'同じ属性の技の威力×1.25',regen:'毎ターンHPが3%回復',swift:'戦闘開始時に速さ↑',thick:'受けるダメージ-10%',stcast:'状態異常を与えやすい',lampwin:'戦闘に勝つと灯+2',kiplus:'気が毎ターン1多くたまる',madless:'狂気がたまりにくい',wet:'攻撃時20%で相手を濡らす',burn:'攻撃時20%で相手に火傷'};
+function hueRot(h,d){let r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255;const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let H=0,S=0,L=(mx+mn)/2;if(mx!==mn){const dd=mx-mn;S=L>.5?dd/(2-mx-mn):dd/(mx+mn);H=mx===r?(g-b)/dd+(g<b?6:0):mx===g?(b-r)/dd+2:(r-g)/dd+4;H/=6}H=(H+d/360+1)%1;S=Math.min(1,S*1.2+.18);const f=(p,q,t)=>{t=(t+1)%1;return t<1/6?p+(q-p)*6*t:t<.5?q:t<2/3?p+(q-p)*(2/3-t)*6:p};const q=L<.5?L*(1+S):L+S-L*S,p=2*L-q;return '#'+[f(p,q,H+1/3),f(p,q,H),f(p,q,H-1/3)].map(v=>Math.round(Math.max(0,Math.min(1,v))*255).toString(16).padStart(2,'0')).join('')}
+function altSpr(k){const a=k+'_alt';if(!SPR[a]){const s=SPR[k],p={};for(const c in s.p)p[c]=(c==='1'||c==='0'||s.p[c]===O)?s.p[c]:hueRot(s.p[c],150);SPR[a]={p,d:s.d}}return a}
+function monSpr(m){const k=SP[m.sp].spr;return m&&m.alt?altSpr(k):k}
+function effParts(m){const b=m.base||{},p={};PARTS.forEach(k=>p[k]=m.parts[k]+(b[k]||0));return p}
+function baseSum(m){return PARTS.reduce((a,k)=>a+((m.base||{})[k]||0),0)}
+function monMul(m){const s=Object.assign({},SP[m.sp].m),P=m.pass||[];const bb=1+((m.bond||1)-1)*.02;for(const k in s)s[k]*=bb;if(m.sub)s[m.sub]*=1.1;if(P.includes('PAS-008')){s.def*=1.15;s.spd*=.9}if(P.includes('PAS-010'))s.spd*=1.12;if(P.includes('PAS-012'))s.res*=1.15;if(P.includes('PAS-026'))for(const k in s)s[k]*=1.1;return s}
+function mstats(m){return stats(effParts(m),monMul(m))}
+function winHooks(p){let l=0;if(HP_(p,'PAS-013'))l+=3;if(p.trait==='lampwin')l+=2;if(l){R.lamp=Math.min(R.lampMax,R.lamp+l);blog(`<span class="y">灯が${l}戻った</span>`)}B.lowWin=p.hp<p.maxhp*.25;
+ R.party.forEach(id=>{const m=monById(id);if(!m)return;m.bw=(m.bw||0)+1;if(m.bw>=12&&(m.bond||1)<5){m.bw=0;m.bond=(m.bond||1)+1;blog(`<span class="p">${m.sp}との絆が深まった（絆${m.bond}）</span>`);stat('bond');tip('bond')}})}
+/* ひらめき */
+function hiraPool(m,foe){const els=[SP[m.sp].el,foe.el,'無'];const mx=Math.min(4,1+Math.floor(R.floor/4));const ok=id=>{const s=SK[id];return !m.learned.includes(id)&&!s[9]&&s[7]!=='融合'&&!id.startsWith('MX')&&!/-01[34]$/.test(id)&&els.includes(s[1])&&RANKS.indexOf(s[6])<=mx};
+ const ks=Object.keys(SK).filter(ok);const act=ks.filter(id=>!isPas(id)).sort(()=>Math.random()-.5),pas=ks.filter(isPas);const out=[];if(pas.length&&Math.random()<.6)out.push(pick(pas));while(out.length<3&&act.length)out.push(act.pop());return out}
+function hirameki(m,e){if(!B||B.hira!==undefined)return;B.hira=null;const ch=(.12+(B.lowWin?.15:0)+(B.turn>=6?.1:0))*((m.pass||[]).includes('PAS-021')?2:1);if(Math.random()>=ch)return;const op=hiraPool(m,e);if(!op.length)return;B.hira=op;stat('hira');setTimeout(()=>sfx('fanfare'),200);
+ UI.modal={title:'<span class="t">ひらめき！</span>',body:`${m.sp}は戦いの中で何かをつかみかけている…<br><span class="s m">1つ選んで覚える</span>`,buttons:op.map(id=>[`<div style="text-align:left">${skHTML(id)} <span class="s m">${SK[id][2]}・${SK[id][6]}${SK[id][3]?'・威力'+SK[id][3]:''}</span><br><span class="s m">${SK[id][8]||'相手にダメージを与える'}</span></div>`,()=>{const msg=learn(m,id);setTimeout(()=>toast(`${SK[id][0]}を覚えた<br><span class="s">${msg}</span>`),50)}]).concat([['見送る',null]])};tip('hira')}
+/* 囚われの灯 */
+function cageSp(){const have=new Set(G.mons.map(m=>m.sp));const c=STARTERS.filter(s=>!have.has(s));return pick(c.length?c:STARTERS)}
+function cage(e){const r=roomOf(e.x,e.y);const gs=R.ents.filter(f=>f.type==='foe'&&f.guard&&roomOf(f.x,f.y)===r);tip('cage');
+ if(gs.length){modal('囚われの灯',`檻の中で、${e.sp}の灯が弱々しく揺れている。<br>見張りの魔物（あと${gs.length}体）がいる限り、檻は開かない。`,[['とじる',null]]);return}
+ modal('囚われの灯',`<div style="display:flex;justify-content:center" id="cgv"></div>檻の中で、${e.sp}の灯が弱々しく揺れている。<br>見張りはもういない。`,[['檻を開ける',()=>{const m=mkMon(e.sp);let n=Math.floor(R.floor*.8);while(n-->0)m.parts[pick(PARTS)]++;G.mons.push(m);R.got.mons.push(e.sp);dex('mon',e.sp,2);stat('rescue');sfx('fanfare');R.ents=R.ents.filter(x=>x!==e);rlog(`<span class="g">${e.sp}を助け出した！仲間になった</span>`);computeVis()}],['あとにする',null]]);setTimeout(()=>{const x=$('#cgv');x&&(x.innerHTML='',x.appendChild(drawSpr(SP[e.sp].spr,5)))},0)}
+/* 分灯・灯に還す */
+function buntoMenu(m){if(G.best<5){modal('分灯','B5に到達すると使えるようになる。',[['とじる',null]]);return}
+ if((m.bond||1)<3){modal('分灯',`絆が3以上の仲間だけが、灯を分けて子を生める。<br><span class="s m">絆は一緒に戦って勝つと深まる（いま 絆${m.bond||1}、次まで あと${12-(m.bw||0)}勝）</span>`,[['とじる',null]]);return}
+ if((m.bunto||0)>=3){modal('分灯','この個体はもう3回分灯した。これ以上は灯を分けられない。',[['とじる',null]]);return}
+ const cost=30*((m.bunto||0)+1),ch=Math.min(.9,.2+(m.omen||0));
+ modal('分灯',`${m.sp}の灯を分けて、子を生む。<br>亜種が生まれる確率 <span class="p">${Math.round(ch*100)}%</span>${m.omen?`（兆し +${Math.round(m.omen*100)}%）`:''}<br><span class="s m">親はそのまま残る。1体につき3回まで（残り${3-(m.bunto||0)}回）。<br>亜種は色が違い、能力の1つが10%高い。<br>亜種でなかった子は、部位の素質（捕食で上がりやすさ）が親より伸び、親には「兆し」が積もる。</span>`,[[`分灯する（灯片 ${cost}）`,()=>{if(G.bank+G.bag.shards<cost){setTimeout(()=>modal('灯片が足りない',`${cost}灯片が必要です（金庫と所持の合計）。`,[['とじる',null]]),0);return}payFrom(cost);doBunto(m,ch)}],['やめる',null]])}
+function doBunto(m,ch){m.bunto=(m.bunto||0)+1;const c=mkMon(m.sp);c.gen=m.gen||1;c.apt=Object.assign({},m.apt||{});let msg;
+ if(Math.random()<ch){c.alt=1;c.sub=pick(Object.keys(STATN2));m.omen=0;msg=`<span class="p">亜種が生まれた！</span><br>体の色が違い、${STATN2[c.sub]}が10%高い。`;stat('alt');sfx('fanfare')}
+ else{const k=pick(PARTS);c.apt[k]=Math.min(4,(c.apt[k]||0)+1);m.omen=Math.min(.6,(m.omen||0)+.1);msg=`子が生まれた。<span class="g">${PN[k]}の素質</span>が親より伸びた。<br><span class="s m">${m.sp}に亜種の兆しが積もった（次の亜種率 ${Math.round(Math.min(.9,.2+m.omen)*100)}%）</span>`;sfx('level')}
+ G.mons.push(c);stat('bunto');dex('mon',c.sp,2);
+ setTimeout(()=>{modal('分灯',`<div style="display:flex;justify-content:center" id="bnv"></div>${msg}<br><span class="s m">いらない子は個体画面の「灯に還す」で灯片にできる。</span>`,[['よし',null]]);setTimeout(()=>{const x=$('#bnv');x&&(x.innerHTML='',x.appendChild(drawSpr(monSpr(c),6)))},0)},0)}
+function removeMon(id){G.mons=G.mons.filter(x=>x.id!==id);G.party=(G.party||[]).filter(x=>x!==id);G.exp=(G.exp||[]).filter(x=>x.id!==id);if(G.mons.length){partyIds();G.active=Math.max(0,G.mons.findIndex(x=>x.id===G.party[0]))}}
+function releaseVal(m){return 10+lvSum(m.parts)*2+baseSum(m)}
+function release(m){if(G.mons.length<=1){toast('最後の1体は還せない');return}if((G.exp||[]).some(x=>x.id===m.id)){toast('遠征中は還せない');return}const n=releaseVal(m);
+ modal('灯に還す',`${m.sp}（ランク${rank(m.parts)}）の灯を還して、灯片${n}に変える。<br><span class="r s">この個体はいなくなる（元に戻せない）</span>`,[[`還す（灯片+${n}）`,()=>{removeMon(m.id);G.bag.shards+=n;stat('release');G.screen='party'}],['やめる',null]])}
+/* 灯合わせ */
+const BUP={火:'エンキ',水:'ミズチ',風:'カザキリ',地:'イワオ',雷:'イカヅチ',氷:'フブキ',光:'テラス',闇:'ヌエ'};
+const BMIX=[['水','雷','シュウウ'],['風','雷','ジンライ'],['火','地','ヨウガメ'],['光','闇','タソガレ'],['火','風','ヒバシリ'],['水','氷','ヒサメ'],['地','水','ヌマヌシ'],['光','火','カガリ']];
+const INH={E:[1,.05],D:[1,.1],C:[2,.15],B:[2,.2],A:[3,.25],S:[3,.3]};
+const BREED_AT=20;
+function breedOpen(){return G.best>=BREED_AT||!!G.cleared[10]}
+function breedChild(a,b){const ea=SP[a.sp].el,eb=SP[b.sp].el;for(const[x,y,c]of BMIX)if((ea===x&&eb===y)||(ea===y&&eb===x))return c;if(ea==='無')return BUP[eb]||null;return BUP[ea]||null}
+function breedBase(A,Bm){const ea=effParts(A),eb=effParts(Bm),pa=INH[rank(A.parts)][1],pb=INH[rank(Bm.parts)][1];const b={};PARTS.forEach(k=>b[k]=Math.min(40,Math.round(ea[k]*pa+eb[k]*pb)));return b}
+function breedCost(A,Bm){return 40+20*(RANKS.indexOf(rank(A.parts))+RANKS.indexOf(rank(Bm.parts)))}
+function knownSp(sp){return((G.dex||{}).mon||{})[sp]===2}
+function rBreed(){const f=UI.br||(UI.br={a:null,b:null,ka:[],kb:[]});const busy=new Set((G.exp||[]).map(x=>x.id));
+ app.appendChild(el(`<div class="row"><span class="y">灯合わせ</span><span class="s">金庫 <span class="y">${G.bank}</span>＋所持 <span class="y">${G.bag.shards}</span></span></div>`));
+ app.appendChild(el(`<div class="s m">2体の灯を合わせて、新しい種族の子を生む。<span class="r">両親は消える。</span>子はLv1から始まるが、親のランクに応じてスキルと素質値（能力の上乗せ）を受け継ぐ。</div>`));
+ const A=monById(f.a),Bm=monById(f.b);
+ const g=document.createElement('div');g.className='g4';
+ G.mons.filter(m=>!busy.has(m.id)).forEach(m=>{const sel=f.a===m.id?'A':f.b===m.id?'B':'';const c=document.createElement('div');c.className='card'+(sel?' sel':'');c.style.cursor='pointer';c.style.padding='4px 2px';const cv=drawSpr(monSpr(m),SP[m.sp].big?3:4);cv.style.margin='0 auto';c.appendChild(cv);c.appendChild(el(`<div class="s" style="white-space:nowrap;overflow:hidden">${sel?`<span class="y">${sel}</span> `:''}${m.sp}</div><div class="s m"><span style="color:${ELC[SP[m.sp].el]}">${SP[m.sp].el}</span> ${rank(m.parts)}</div>`));
+  c.onclick=()=>{sfx('click');if(f.a===m.id){f.a=f.b;f.b=null}else if(f.b===m.id)f.b=null;else if(!f.a)f.a=m.id;else if(!f.b)f.b=m.id;else f.b=m.id;const a=monById(f.a),b=monById(f.b);f.ka=a?a.learned.slice().sort((x,y)=>RANKS.indexOf(SK[y][6])-RANKS.indexOf(SK[x][6])).slice(0,INH[rank(a.parts)][0]):[];f.kb=b?b.learned.slice().sort((x,y)=>RANKS.indexOf(SK[y][6])-RANKS.indexOf(SK[x][6])).slice(0,INH[rank(b.parts)][0]):[];render()};g.appendChild(c)});
+ app.appendChild(g);
+ if(A&&Bm){const sp=breedChild(A,Bm),S0=SP[sp],kn=knownSp(sp),base=breedBase(A,Bm),cost=breedCost(A,Bm);
+  const pv=el('');pv.className='bx';const top=el('');top.style.cssText='display:flex;gap:10px;align-items:center';const cv=drawSpr(S0.spr,4);if(!kn)cv.style.filter='brightness(0) invert(.35)';top.appendChild(cv);
+  top.appendChild(el(`<div><div class="s m">${A.sp} ＋ ${Bm.sp} →</div><span class="y">${kn?sp:'？？？'}</span> ${elTag(S0.el)}${S0.breed===2?' <span class="s p">混成種</span>':''}<div class="s m">${kn?S0.d:'まだ見ぬ種族'}</div><div class="s">特性：${kn?TRAITD[S0.trait]:'？'}</div></div>`));pv.appendChild(top);
+  pv.appendChild(el(`<div class="s" style="margin-top:6px">素質値（Lv1に上乗せ）：${PARTS.map(k=>`${PN[k].slice(0,1)}+${base[k]}`).join(' ')}</div><div class="s m">A ランク${rank(A.parts)}：スキル${INH[rank(A.parts)][0]}つ・素質${INH[rank(A.parts)][1]*100}%　B ランク${rank(Bm.parts)}：スキル${INH[rank(Bm.parts)][0]}つ・素質${INH[rank(Bm.parts)][1]*100}%</div>`));app.appendChild(pv);
+  [[A,'ka','A'],[Bm,'kb','B']].forEach(([M,key,lb])=>{const n=INH[rank(M.parts)][0];app.appendChild(el(`<div class="s y">${lb}：${M.sp}から受け継ぐスキル（${f[key].length}/${n}）</div>`));const ch=document.createElement('div');ch.className='chips';
+   M.learned.forEach(id=>{const on=f[key].includes(id);const b=btn(`${skHTML(id)}${isPas(id)?'<span class="s m">［常］</span>':''}`,()=>{if(on)f[key]=f[key].filter(x=>x!==id);else if(f[key].length<n)f[key].push(id);else{f[key].shift();f[key].push(id)}render()});if(on)b.className='on';ch.appendChild(b)});app.appendChild(ch)});
+  app.appendChild(btn(`灯合わせする（灯片 ${cost}）`,()=>{if(G.bank+G.bag.shards<cost){modal('灯片が足りない',`${cost}灯片が必要です（金庫と所持の合計）。`,[['とじる',null]]);return}
+   modal('灯合わせ',`${A.sp}と${Bm.sp}の灯を合わせる。<br><span class="r">2体はいなくなる。</span>よろしいですか？`,[['合わせる',()=>{payFrom(cost);doBreed(A,Bm,sp,f.ka,f.kb)}],['やめる',null]])}))}
+ else{const lst=BMIX.map(([x,y,c])=>knownSp(c)?`<span style="color:${ELC[x]}">${x}</span>＋<span style="color:${ELC[y]}">${y}</span> → ${c}`:`<span class="m">？＋？ → ？？？</span>`).join('<br>');
+  app.appendChild(el(`<div class="bx s"><span class="y">配合の決まり</span><br>・同じ属性どうし → その属性の<span class="p">上位種</span><br>・特定の属性の組み合わせ → <span class="p">混成種</span>（8種）<br>・それ以外 → Aに選んだ方の属性の上位種<br><span class="m">親を2体タップして選ぶ（1体目がA）</span><div style="margin-top:6px">${lst}</div></div>`))}
+ app.appendChild(btn('もどる',()=>{UI.br=null;G.screen='camp';render()}))}
+function doBreed(A,Bm,sp,ka,kb){const c=mkMon(sp);c.base=breedBase(A,Bm);c.gen=Math.max(A.gen||1,Bm.gen||1)+1;PARTS.forEach(k=>{const v=Math.max((A.apt||{})[k]||0,(Bm.apt||{})[k]||0);if(v)c.apt[k]=v});
+ [...ka,...kb].forEach(id=>{if(SK[id]&&!c.learned.includes(id))c.learned.push(id)});c.equip=c.learned.filter(id=>!isPas(id)).slice(0,6);c.pass=c.learned.filter(isPas).slice(0,passSlots(c));
+ const inP=(G.party||[]).includes(A.id)||(G.party||[]).includes(Bm.id);G.mons.push(c);removeMon(A.id);removeMon(Bm.id);if(inP&&!G.party.includes(c.id)&&G.party.length<pSlots())G.party.push(c.id);partyIds();G.active=G.mons.findIndex(x=>x.id===c.id);
+ stat('breed');dex('mon',sp,2);sfx('fuse');UI.br=null;
+ modal('灯合わせ',`<div style="display:flex;justify-content:center" id="brv"></div><span class="y">${sp}</span>が生まれた！（第${c.gen}世代）<br><span class="s">${SP[sp].d}</span><br><span class="s m">素質値 合計+${baseSum(c)}・受け継いだスキル${ka.length+kb.length}つ</span>`,[['よし',null]]);setTimeout(()=>{const x=$('#brv');x&&(x.innerHTML='',x.appendChild(drawSpr(monSpr(c),6)))},0)}
+/* 設定 */
+function applyCfg(){const c=cfg();document.documentElement.style.setProperty('--z',[.9,1,1.12][c.font]);if(BGG)BGG.gain.value=.4*c.bgm/100;if(SG)SG.gain.value=1.1*c.se/100;const s=sndCfg();s.bgm=c.bgm>0;s.se=c.se>0}
+function rCfg(){const c=cfg();app.appendChild(el(`<div class="row"><span class="y">設定</span><span class="s m">試遊版 v3</span></div>`));
+ const box=el('');box.className='bx';
+ [['bgm','BGMの音量'],['se','効果音の音量']].forEach(([k,n])=>{const w=el(`<div class="row s"><span>${n}</span><span id="v_${k}">${c[k]}</span></div>`);const r=document.createElement('input');r.type='range';r.min=0;r.max=100;r.step=5;r.value=c[k];r.style.width='100%';r.oninput=()=>{const was=c[k];c[k]=+r.value;$('#v_'+k).textContent=c[k];applyCfg();if(k==='bgm'&&(!was)!==(!c[k])){BGM.cur=null;bgm(bgmFor(),true)}};r.onchange=()=>{if(k==='se')sfx('coin');save()};box.appendChild(w);box.appendChild(r)});app.appendChild(box);
+ const opt=(lab,key,vals)=>{app.appendChild(el(`<div class="s">${lab}</div>`));const ch=document.createElement('div');ch.className='chips';vals.forEach(([v,n])=>{const b=btn(n,()=>{c[key]=v;applyCfg();render()});if(c[key]===v)b.className='on';ch.appendChild(b)});app.appendChild(ch)};
+ opt('文字の大きさ（メニュー画面）','font',[[0,'小'],[1,'中'],[2,'大']]);
+ opt('移動の速さ（長押し・自動探索）','walk',[[0,'ゆっくり'],[1,'ふつう'],[2,'はやい']]);
+ opt('操作ボタンの配置','left',[[false,'右手（矢印が左）'],[true,'左手（矢印が右）']]);
+ opt('はじめての説明','tips',[[true,'表示する'],[false,'表示しない']]);
+ app.appendChild(btn('説明をもう一度最初から見る',()=>{G.tut={};c.tips=true;toast('説明をリセットした（次に該当する場面で表示）')}));
+ app.appendChild(btn('物語のはじまりをもう一度見る',()=>prologue(0)));
+ app.appendChild(btn('データの引き継ぎ',transferMenu));
+ app.appendChild(btn('<span class="m">見た目確認：階層帯を選んで潜る</span>',()=>modal('階層帯の見た目を試す','タイルや置物の見た目を確認できます。<br><span class="s m">敵や階の構成はB1と同じです。</span>',THEMES.map((T,i)=>[`${i+1}. ${T.n}`,()=>{setTimeout(()=>startRun(1,i),0)}]).concat([['やめる',null]]))));
+ app.appendChild(btn('もどる',()=>{G.screen='camp';render()}))}
+function walkMs(base){return Math.round(base*[1.4,1,.68][cfg().walk])}
+/* はじめての説明 */
+const TIPS={
+ move:['移動','下の矢印で1マス進む。押し続けると歩き続ける。<br>画面のマスをタップすると、そこまで自動で歩く。<br>「自動探索」はまだ見ていない場所を歩いてくれる（何か見つけると止まる）。'],
+ foe:['魔物','魔物に触れると戦闘になる。<br>近くにいると追ってくるが、しばらく逃げればあきらめる。'],
+ battle:['戦闘','スキルを選んで攻撃する。スキルには「気」が必要で、毎ターン2ずつたまる。<br><span class="y">▲</span>は効果抜群、▼はいまひとつ。スキルを<span class="y">長押し</span>すると説明が見られる。'],
+ eat:['捕食と封印','倒した魔物は「捕食」して部位Lvを上げるか、「封印」してスキルを奪うかを選ぶ。<br>部位Lvは能力値に直結する。迷ったら捕食。'],
+ item:['持ち物','拾ったものは「持ち物」から使える。薬草でHP回復、食料で腹を満たす。<br>腹が0になると力が落ちる。'],
+ stairs:['下り階段','階段を見つけた。乗ると次の階へ降りる（灯を6使う）。<br>「階段へ」で見つけた階段まで自動で歩く。見つからないときは「調べる」で方角が分かる。'],
+ lamp:['灯','画面上の「灯」が潜行の残り。階段を降りるたびに6減る。<br>0になると野営地へ戻される（成長は持ち帰れる）。'],
+ ret:['帰還','「帰還」でいつでも野営地に戻れる。上がった部位Lvや拾ったものはそのまま持ち帰れる。<br>全員倒れると、今回上がった部位Lvの半分と灯片の一部を失う。無理は禁物。'],
+ camp:['野営地','ここが拠点。灯片で道具を買い、施設を強化し、仲間を整える。<br>「潜行する」で再びダンジョンへ。'],
+ boss:['ボス','5階ごとにボスが待つ。ボスからは逃げられない。<br>倒すと灯の核が手に入り、野営地で目覚めさせると仲間になる。'],
+ chest:['宝箱','宝箱には道具や灯片が入っている。<br>まれにミミックが化けていることもある。'],
+ merchant:['灯の行商人','灯片で道具を買える。品揃えは毎回変わる。'],
+ statue:['石像','灯片を捧げて祈ると何かが起きる。良いことばかりとは限らない。'],
+ anom:['異変','この階には「異変」が起きている。宝が多い、霧で地図が見えない…など。<br>階段を降りる前に、次の階の気配が分かることもある。'],
+ kage:['影喰い','同じ階に長居すると影喰いが現れる。強いが、倒せば見返りも大きい。'],
+ boon:['灯の恵み','階を降りると「灯の恵み」を1つ選べる。帰還せずに続けて降りるほど報酬が増える（連灯）。'],
+ secret:['隠し部屋','ひびの入った壁は崩せる。「調べる」で近くのひびが見つかることがある。'],
+ curse:['呪い','呪われた書のスキルは強力だが、使うと狂気がたまる。'],
+ mad:['狂気','攻撃を受けると狂気がたまる。50%を超えると力が上がり、80%を超えると命令を聞かずに暴走することがある。<br>戦闘が終わると元に戻る。'],
+ party:['同行','仲間を連れていけるようになった。「仲間・同行」で選ぶ。<br>戦闘中は「交代」で入れ替えられる（ターンを使う）。'],
+ fuse:['融合の炉','スキル2つを組み合わせて新しいスキルを作れるようになった。<br>同じ属性の攻撃どうしは「昇華」、それ以外は「合成」になる。'],
+ bunto:['分灯','絆が3以上の仲間は、個体画面の「分灯」で子を生める。<br>まれに色違いの亜種が生まれる。外れるたびに「兆し」が積もり、次の亜種率が上がる。'],
+ breed:['灯合わせ','2体の仲間を合わせて、新しい種族を生めるようになった。<br>両親は消えるが、ランクに応じてスキルと「素質値」（能力の上乗せ）を受け継ぐ。何代も重ねると、強いLv1が生まれる。'],
+ pass:['パッシブ','常に効果がある「パッシブ」スキルを覚えた。<br>個体画面で付け替えられる。枠はランクで増える（E〜D:1、C〜B:2、A〜S:3）。'],
+ hira:['ひらめき','戦いの中で、ときどき新しいスキルをひらめく。<br>苦戦したり長引いたりした戦いほど、ひらめきやすい。'],
+ bond:['絆','一緒に戦って勝つと絆が深まる（最大5）。<br>絆が深いほど能力が少し上がり、暴走しにくくなる。絆3から「分灯」ができる。'],
+ cage:['囚われの灯','檻に灯が囚われている。部屋の見張りの魔物をすべて倒すと助け出せる。<br>助けた灯は仲間になる。'],
+ expe:['遠征','連れていかない仲間を遠征に出すと、潜行2回分で灯片や道具を持ち帰る。']};
+function tip(id){if(!G||!TIPS[id])return;G.tut=G.tut||{};if(G.tut[id])return;G.tut[id]=1;if(cfg().tips===false)return;UI.tipQ=UI.tipQ||[];UI.tipQ.push(id);setTimeout(showTip,60)}
+function showTip(){if(!UI.tipQ||!UI.tipQ.length)return;if(UI.modal||G.screen==='title'){clearTimeout(UI.tipT);UI.tipT=setTimeout(showTip,450);return}const CT=['camp','party','fuse','bunto','breed','expe'];const qi=UI.tipQ.findIndex(i=>CT.includes(i)?G.screen==='camp':G.screen!=='camp');if(qi<0){clearTimeout(UI.tipT);UI.tipT=setTimeout(showTip,600);return}const id=UI.tipQ.splice(qi,1)[0];const[tt,b]=TIPS[id];try{holdEnd();stopAuto()}catch(e){}modal(`<span class="t">◆ ${tt}</span>`,b,[['わかった',()=>{if(UI.tipQ.length)setTimeout(showTip,250)}]])}
+function tutSee(){if(!R||!G.tut)return;const T=G.tut;if(T.foe&&T.stairs&&T.chest&&T.merchant&&T.statue)return;for(const e of R.ents){if(!R.vis[e.x+','+e.y])continue;if(e.type==='foe'&&!FOES[e.k].boss)tip('foe');if(e.type==='chest')tip('chest');if(e.type==='merchant')tip('merchant');if(e.type==='statue')tip('statue')}const s=stairsPos();if(s&&R.vis[s[0]+','+s[1]])tip('stairs')}
+/* 物語 */
+const PROLOGUE=['地の底へ続く大穴のそばに、小さな野営地がある。<br>焚き火を絶やさぬこと。それだけが、灯守りの仕事だった。','穴の底では、灯を失った獣たちが影に呑まれていく。<br>喰らい、奪い、それでも足りずに、深く、深くへ。','あなたは灯守りの最後の一人。<br>分け与えられる灯は、あとひとつだけ残っている。','その灯を、誰に分けようか。'];
+function prologue(i){modal('',`<div style="line-height:1.9;padding:8px 2px">${PROLOGUE[i]}</div>`,[[i<PROLOGUE.length-1?'……':'灯を分ける',()=>{if(i<PROLOGUE.length-1)setTimeout(()=>prologue(i+1),0)}]])}
+const ENDING=['風の洞を抜けると、地の底から冷たいしずくの音が聞こえた。','振り返れば、仲間たちの灯が揺れている。<br>この灯がある限り、まだ潜れる。','<span class="y">― 試遊版はここまで ―</span><br>B11「しずく洞」から先は、次の更新で。<br><span class="s m">遊んでくれて、ありがとう。</span>'];
+function ending(i,fin){modal(i===0?'<span class="y">B10 突破</span>':'',`<div style="line-height:1.9;padding:8px 2px">${ENDING[i]}</div>`,[[i<ENDING.length-1?'……':'結果を見る',()=>{if(i<ENDING.length-1)setTimeout(()=>ending(i+1,fin),0);else fin()}]])}
+const MUR=[[0,'焚き火がはぜる。穴の底から、風が吹き上げてくる。'],[0,'仲間が火のそばで丸くなっている。'],[0,'灯片を数える音だけが、夜に響く。'],[0,'遠くで、影喰いの鳴く声がした気がする。'],[1,'苔の匂いが、まだ体に残っている。'],[1,'穴の縁に立つと、底のほうで小さな灯がいくつも瞬いて見えた。'],[5,'ネズミの長の巣は、静かになったらしい。'],[5,'仲間が増えると、焚き火が少し狭く感じる。'],[10,'風の洞の向こうから、しずくの落ちる音が聞こえる。'],[10,'炉に火を入れた。古い技が、新しい形を待っている。']];
+function murmur(){if(UI.mur)return UI.mur;const bd=G.mons.filter(m=>(m.bond||1)>=3);const c=MUR.filter(([b])=>G.best>=b).map(x=>x[1]);if(bd.length)c.push(`${pick(bd).sp}が、じっとこちらを見ている。`);UI.mur=pick(c);return UI.mur}
+const MERL=['「…灯片と交換だよ」','「深く潜るほど、いい品が手に入るよ」','「影喰いには気をつけな。あれは長居する者を嗅ぎつける」','「あんたの灯、まだ明るいね」','「この先は、灯がいくらあっても足りないよ」','「売れ残りでも、いつか誰かの命を救うのさ」'];
+/* セーブの版と移行 */
+const MIGS={
+ 2:g=>{if(g.mons&&g.mons.length&&!g.party)g.party=[(g.mons[g.active]||g.mons[0]).id]},
+ 3:g=>{(g.mons||[]).forEach(m=>{m.base=m.base||{};m.apt=m.apt||{};m.pass=m.pass||[];m.omen=m.omen||0;m.bunto=m.bunto||0;m.bond=m.bond||1;m.bw=m.bw||0;m.gen=m.gen||1;m.equip=(m.equip||[]).filter(id=>SK[id]&&!isPas(id))});
+  g.cfg=Object.assign(defCfg(),{bgm:g.snd&&g.snd.bgm===false?0:70,se:g.snd&&g.snd.se===false?0:80},g.cfg||{});
+  if(!g.tut){g.tut={};if((g.best||0)>0)['move','foe','battle','eat','item','stairs','lamp','ret','camp','boss','chest','merchant','statue','anom','kage','boon','secret','curse','mad','party','fuse'].forEach(k=>g.tut[k]=1)}}};
+function migrate(){let v=G.ver||(G.party?2:1);while(v<GVER){v++;if(MIGS[v])MIGS[v](G)}G.ver=GVER}
+
 /* ---------- boot ---------- */
-function bootFix(){if(G.bag.shards==null)G.bag.shards=0;if(!G.bag.val)G.bag.val={};if(G.mons&&G.mons.length&&!G.party)G.party=[(G.mons[G.active]||G.mons[0]).id];if(G.bag.hiherb){G.bag.herb2=(G.bag.herb2||0)+G.bag.hiherb;delete G.bag.hiherb}if(G.bank==null)G.bank=0;if(!G.mix)G.mix={};if(!G.fac)G.fac={};if(!G.st)G.st={};if(!G.ach)G.ach={};regMix();if(G.screen!=='title'&&G.screen!=='pick'&&G.screen!=='camp'&&G.screen!=='mon')G.screen=G.mons.length?'camp':'title'}
+function bootFix(){migrate();if(G.bag.shards==null)G.bag.shards=0;if(!G.bag.val)G.bag.val={};if(G.mons&&G.mons.length&&!G.party)G.party=[(G.mons[G.active]||G.mons[0]).id];if(G.bag.hiherb){G.bag.herb2=(G.bag.herb2||0)+G.bag.hiherb;delete G.bag.hiherb}if(G.bank==null)G.bank=0;if(!G.mix)G.mix={};if(!G.fac)G.fac={};if(!G.st)G.st={};if(!G.ach)G.ach={};regMix();G.mons.forEach(m=>{if(m.alt)altSpr(SP[m.sp].spr)});applyCfg();if(G.screen!=='title'&&G.screen!=='pick'&&G.screen!=='camp'&&G.screen!=='mon')G.screen=G.mons.length?'camp':'title'}
 function resumeRun(rr){R=rr;if(!R.hps){const id=(G.mons[G.active]||G.mons[0]).id;R.hps={[id]:R.hp||maxHp(monById(id))};R.lead=id;R.party=[id]}if(!R.gby)R.gby={};delete R.hp;bindHP();useTheme(R.theme||0);R.dx=R.px;R.dy=R.py;R.ents.forEach(e=>{e.dx=e.x;e.dy=e.y});computeVis();G.screen='map';render();modal('潜行を再開',`B${R.floor}の探索の途中から再開した。<br><span class="s m">戦闘中に中断した場合は、その直前から始まる。</span>`,[['つづける',null]])}
 G=load()||newG();bootFix();
 {const rr=loadRun();if(rr&&G.mons.length&&rr.ents){resumeRun(rr)}else render()}
